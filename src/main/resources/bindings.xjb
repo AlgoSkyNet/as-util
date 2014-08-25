@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
+  version="2.1">
+  <jaxb:bindings schemaLocation="as-meta-model.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="com.tibco.as.util" />
+    </jaxb:schemaBindings>
+  </jaxb:bindings>
+  <jaxb:bindings schemaLocation="activespaces.xsd">
+    <jaxb:schemaBindings>
+      <jaxb:package name="com.tibco.as.xml" />
+    </jaxb:schemaBindings>
+    <jaxb:bindings
+      node="//xs:complexType[@name='space']//xs:element[@name='field']">
+      <jaxb:property name="fields" />
+    </jaxb:bindings>
+    <jaxb:bindings
+      node="//xs:complexType[@name='space']//xs:element[@name='index']">
+      <jaxb:property name="indexes" />
+    </jaxb:bindings>
+    <jaxb:bindings
+      node="//xs:complexType[@name='index']//xs:element[@name='field']">
+      <jaxb:property name="fields" />
+    </jaxb:bindings>
+    <jaxb:bindings
+      node="//xs:complexType[@name='members']//xs:element[@name='member']">
+      <jaxb:property name="members" />
+    </jaxb:bindings>
+    <jaxb:bindings
+      node="//xs:complexType[@name='spaces']//xs:element[@name='space']">
+      <jaxb:property name="spaces" />
+    </jaxb:bindings>
+    <jaxb:bindings
+      node="//xs:complexType[@name='spaceMemberStats']//xs:element[@name='spaceMemberStat']">
+      <jaxb:property name="spaceMemberStats" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='indexType']">
+      <jaxb:javaType name="com.tibco.as.space.IndexDef.IndexType"
+        parseMethod="com.tibco.as.xml.Adapter.parseIndexType"
+        printMethod="com.tibco.as.xml.Adapter.printIndexType" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='updateTransport']">
+      <jaxb:javaType name="com.tibco.as.space.SpaceDef.UpdateTransport"
+        parseMethod="com.tibco.as.xml.Adapter.parseUpdateTransport"
+        printMethod="com.tibco.as.xml.Adapter.printUpdateTransport" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='lockScope']">
+      <jaxb:javaType name="com.tibco.as.space.SpaceDef.LockScope"
+        parseMethod="com.tibco.as.xml.Adapter.parseLockScope"
+        printMethod="com.tibco.as.xml.Adapter.printLockScope" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='evictionPolicy']">
+      <jaxb:javaType name="com.tibco.as.space.SpaceDef.EvictionPolicy"
+        parseMethod="com.tibco.as.xml.Adapter.parseEvictionPolicy"
+        printMethod="com.tibco.as.xml.Adapter.printEvictionPolicy" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='replicationPolicy']">
+      <jaxb:javaType name="com.tibco.as.space.SpaceDef.ReplicationPolicy"
+        parseMethod="com.tibco.as.xml.Adapter.parseReplicationPolicy"
+        printMethod="com.tibco.as.xml.Adapter.printReplicationPolicy" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='persistenceType']">
+      <jaxb:javaType name="com.tibco.as.space.SpaceDef.PersistenceType"
+        parseMethod="com.tibco.as.xml.Adapter.parsePersistenceType"
+        printMethod="com.tibco.as.xml.Adapter.printPersistenceType" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='persistencePolicy']">
+      <jaxb:javaType name="com.tibco.as.space.SpaceDef.PersistencePolicy"
+        parseMethod="com.tibco.as.xml.Adapter.parsePersistencePolicy"
+        printMethod="com.tibco.as.xml.Adapter.printPersistencePolicy" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='cachePolicy']">
+      <jaxb:javaType name="com.tibco.as.space.SpaceDef.CachePolicy"
+        parseMethod="com.tibco.as.xml.Adapter.parseCachePolicy"
+        printMethod="com.tibco.as.xml.Adapter.printCachePolicy" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='distributionPolicy']">
+      <jaxb:javaType name="com.tibco.as.space.SpaceDef.DistributionPolicy"
+        parseMethod="com.tibco.as.xml.Adapter.parseDistributionPolicy"
+        printMethod="com.tibco.as.xml.Adapter.printDistributionPolicy" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='fieldType']">
+      <jaxb:javaType name="com.tibco.as.space.FieldDef.FieldType"
+        parseMethod="com.tibco.as.xml.Adapter.parseFieldType"
+        printMethod="com.tibco.as.xml.Adapter.printFieldType" />
+    </jaxb:bindings>
+    <jaxb:bindings node="//xs:simpleType[@name='managementRole']">
+      <jaxb:javaType name="com.tibco.as.space.Member.ManagementRole"
+        parseMethod="com.tibco.as.xml.Adapter.parseManagementRole"
+        printMethod="com.tibco.as.xml.Adapter.printManagementRole" />
+    </jaxb:bindings>
+  </jaxb:bindings>
+</jaxb:bindings>

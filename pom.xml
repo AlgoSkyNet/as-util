@@ -1,0 +1,126 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.tibco.as</groupId>
+  <artifactId>as-util</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>ActiveSpaces Utils</name>
+  <description>Utility framework for ActiveSpaces applications</description>
+  <packaging>bundle</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <as.version>2.1.3</as.version>
+  </properties>
+
+  <organization>
+    <name>TIBCO Software</name>
+    <url>http://www.tibco.com/</url>
+  </organization>
+
+  <contributors>
+    <contributor>
+      <name>Julien Ruaux</name>
+      <email>jruaux(at)tibco(dot)com</email>
+    </contributor>
+  </contributors>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.tibco.as</groupId>
+      <artifactId>as-common</artifactId>
+      <version>${as.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>org.eclipse.persistence.moxy</artifactId>
+      <version>2.5.2</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>xmlunit</groupId>
+      <artifactId>xmlunit</artifactId>
+      <version>1.5</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>6</source>
+          <target>6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jvnet.jaxb2.maven2</groupId>
+        <artifactId>maven-jaxb2-plugin</artifactId>
+        <version>0.9.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>2.5.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <manifestLocation>META-INF</manifestLocation>
+          <instructions>
+            <Bundle-Classpath>external:$AS_HOME$/lib/as-common.jar</Bundle-Classpath>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+            <Export-Package>com.tibco.as.space,
+              com.tibco.as.space.browser,
+              com.tibco.as.space.event,
+              com.tibco.as.space.filter,
+              com.tibco.as.space.impl,
+              com.tibco.as.space.impl.data,
+              com.tibco.as.space.impl.serializer,
+              com.tibco.as.space.listener,
+              com.tibco.as.space.persistence,
+              com.tibco.as.space.remote,
+              com.tibco.as.space.router,
+              com.tibco.as.space.security,com.tibco.as.util,
+              com.tibco.as.xml,com.tibco.as.utils,com.tibco.as.accessors,com.tibco.as.convert,com.tibco.as.convert.array,com.tibco.as.convert.format</Export-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>releases</id>
+      <name>Release Repository</name>
+      <url>http://activespaces.tibco.com/nexus/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Snapshot Repository</name>
+      <url>http://activespaces.tibco.com/nexus/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <scm>
+    <url>https://github.com/TIBCOSoftware/as-util</url>
+    <connection>scm:git:git://github.com/TIBCOSoftware/as-util.git</connection>
+    <developerConnection>scm:git:git@github.com:TIBCOSoftware/as-util.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
+</project>

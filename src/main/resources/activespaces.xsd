@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:element name="metaspaces" type="metaspaces" />
+
+	<xsd:complexType name="metaspaces">
+		<xsd:sequence>
+			<xsd:element name="metaspace" type="metaspace" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="metaspace" type="metaspace" />
+
+	<xsd:element name="members" type="members" />
+
+	<xsd:complexType name="members">
+		<xsd:sequence>
+			<xsd:element name="member" type="member" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="member" type="member" />
+
+	<xsd:complexType name="member">
+		<xsd:attribute name="hostAddress" type="xsd:string" />
+		<xsd:attribute name="id" type="xsd:string" />
+		<xsd:attribute name="joinTime" type="xsd:dateTime" />
+		<xsd:attribute name="managementRole" type="managementRole" />
+		<xsd:attribute name="name" type="xsd:string" />
+		<xsd:attribute name="port" type="xsd:int" />
+	</xsd:complexType>
+
+	<xsd:simpleType name="managementRole">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="manager" />
+			<xsd:enumeration value="member" />
+			<xsd:enumeration value="no_role" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="metaspace">
+		<xsd:attribute name="name" type="xsd:string" />
+		<xsd:attribute name="member" type="xsd:string" />
+		<xsd:attribute name="discovery" type="xsd:string" />
+		<xsd:attribute name="remote" type="xsd:boolean" default="false" />
+		<xsd:attribute name="listen" type="xsd:string" />
+		<xsd:attribute name="connectTimeout" type="xsd:long" />
+	</xsd:complexType>
+
+	<xsd:element name="spaces" type="spaces" />
+
+	<xsd:complexType name="spaces">
+		<xsd:sequence>
+			<xsd:element name="space" type="space" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="space" type="space" />
+
+	<xsd:complexType name="space">
+		<xsd:sequence>
+			<xsd:element name="field" type="field" minOccurs="0"
+				maxOccurs="unbounded" />
+			<xsd:element name="index" type="index" minOccurs="0"
+				maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+		<xsd:attribute name="capacity" type="xsd:long" />
+		<xsd:attribute name="cachePolicy" type="cachePolicy" />
+		<xsd:attribute name="distributionPolicy" type="distributionPolicy" />
+		<xsd:attribute name="evictionPolicy" type="evictionPolicy" />
+		<xsd:attribute name="fileSyncInterval" type="xsd:long" />
+		<xsd:attribute name="forgetOldValue" type="xsd:boolean" />
+		<xsd:attribute name="hostAwareReplication" type="xsd:boolean" />
+		<xsd:attribute name="keyIndexType" type="indexType" />
+		<xsd:attribute name="lockScope" type="lockScope" />
+		<xsd:attribute name="lockTTL" type="xsd:long" />
+		<xsd:attribute name="lockWait" type="xsd:long" />
+		<xsd:attribute name="minSeederCount" type="xsd:int" />
+		<xsd:attribute name="persistencePolicy" type="persistencePolicy" />
+		<xsd:attribute name="persistenceType" type="persistenceType" />
+		<xsd:attribute name="persistenceDistributionPolicy"
+			type="distributionPolicy" />
+		<xsd:attribute name="phaseCount" type="xsd:int" />
+		<xsd:attribute name="phaseRatio" type="xsd:int" />
+		<xsd:attribute name="queryLimit" type="xsd:long" />
+		<xsd:attribute name="queryTimeout" type="xsd:long" />
+		<xsd:attribute name="readTimeout" type="xsd:long" />
+		<xsd:attribute name="replicationCount" type="xsd:int" />
+		<xsd:attribute name="replicationPolicy" type="replicationPolicy" />
+		<xsd:attribute name="routed" type="xsd:boolean" />
+		<xsd:attribute name="spaceWait" type="xsd:long" />
+		<xsd:attribute name="ttl" type="xsd:long" />
+		<xsd:attribute name="updateTransport" type="updateTransport" />
+		<xsd:attribute name="virtualNodeCount" type="xsd:int" />
+		<xsd:attribute name="writeTimeout" type="xsd:long" />
+	</xsd:complexType>
+
+	<xsd:complexType name="field">
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+		<xsd:attribute name="encrypted" type="xsd:boolean" />
+		<xsd:attribute name="key" type="xsd:boolean" />
+		<xsd:attribute name="distribution" type="xsd:boolean" />
+		<xsd:attribute name="nullable" type="xsd:boolean" />
+		<xsd:attribute name="type" type="fieldType" />
+	</xsd:complexType>
+
+	<xsd:simpleType name="lockScope">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="none" />
+			<xsd:enumeration value="thread" />
+			<xsd:enumeration value="process" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="index">
+		<xsd:sequence>
+			<xsd:element name="field" type="xsd:string" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+		<xsd:attribute name="type" type="indexType" />
+	</xsd:complexType>
+
+	<xsd:simpleType name="updateTransport">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="multicast" />
+			<xsd:enumeration value="unicast" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="indexType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="hash" />
+			<xsd:enumeration value="tree" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="evictionPolicy">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="lru" />
+			<xsd:enumeration value="none" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="replicationPolicy">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="sync" />
+			<xsd:enumeration value="async" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="persistenceType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="none" />
+			<xsd:enumeration value="share_all" />
+			<xsd:enumeration value="share_nothing" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="persistencePolicy">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="async" />
+			<xsd:enumeration value="none" />
+			<xsd:enumeration value="sync" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="cachePolicy">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="read_through" />
+			<xsd:enumeration value="read_write_through" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+	<xsd:simpleType name="distributionPolicy">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="addressed" />
+			<xsd:enumeration value="distributed" />
+			<xsd:enumeration value="non_distributed" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="fieldType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="blob" />
+			<xsd:enumeration value="boolean" />
+			<xsd:enumeration value="char" />
+			<xsd:enumeration value="datetime" />
+			<xsd:enumeration value="double" />
+			<xsd:enumeration value="float" />
+			<xsd:enumeration value="integer" />
+			<xsd:enumeration value="long" />
+			<xsd:enumeration value="short" />
+			<xsd:enumeration value="string" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:element name="spaceMemberStats" type="spaceMemberStats" />
+
+	<xsd:complexType name="spaceMemberStats">
+		<xsd:sequence>
+			<xsd:element name="spaceMemberStat" type="spaceMemberStat"
+				maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="spaceMemberStat" type="spaceMemberStat" />
+
+	<xsd:complexType name="spaceMemberStat">
+		<xsd:complexContent>
+			<xsd:extension base="spaceStat">
+				<xsd:attribute name="memberId" type="xsd:string" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="spaceStat" type="spaceStat" />
+
+	<xsd:complexType name="spaceStat">
+		<xsd:attribute name="space" type="xsd:string" />
+		<xsd:attribute name="original" type="xsd:long" />
+		<xsd:attribute name="replica" type="xsd:long" />
+		<xsd:attribute name="put" type="xsd:long" />
+		<xsd:attribute name="get" type="xsd:long" />
+		<xsd:attribute name="take" type="xsd:long" />
+		<xsd:attribute name="expire" type="xsd:long" />
+		<xsd:attribute name="evict" type="xsd:long" />
+		<xsd:attribute name="lock" type="xsd:long" />
+		<xsd:attribute name="unlock" type="xsd:long" />
+		<xsd:attribute name="invoke" type="xsd:long" />
+		<xsd:attribute name="query" type="xsd:long" />
+		<xsd:attribute name="miss" type="xsd:long" />
+	</xsd:complexType>
+
+</xsd:schema>
