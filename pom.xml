@@ -10,7 +10,6 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <as.version>2.1.3</as.version>
   </properties>
 
   <organization>
@@ -29,24 +28,13 @@
     <dependency>
       <groupId>com.tibco.as</groupId>
       <artifactId>as-common</artifactId>
-      <version>${as.version}</version>
+      <version>2.1.3</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.persistence</groupId>
-      <artifactId>org.eclipse.persistence.moxy</artifactId>
-      <version>2.5.2</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>xmlunit</groupId>
-      <artifactId>xmlunit</artifactId>
-      <version>1.5</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -81,6 +69,7 @@
         <extensions>true</extensions>
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
+          <excludeDependencies>*;scope=provided</excludeDependencies>
           <instructions>
             <Bundle-Classpath>external:$AS_HOME$/lib/as-common.jar</Bundle-Classpath>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
@@ -96,7 +85,7 @@
               com.tibco.as.space.remote,
               com.tibco.as.space.router,
               com.tibco.as.space.security,com.tibco.as.util,
-              com.tibco.as.xml,com.tibco.as.utils,com.tibco.as.accessors,com.tibco.as.convert,com.tibco.as.convert.array,com.tibco.as.convert.format</Export-Package>
+              com.tibco.as.utils,com.tibco.as.accessors,com.tibco.as.convert,com.tibco.as.convert.array,com.tibco.as.convert.format</Export-Package>
           </instructions>
         </configuration>
       </plugin>
