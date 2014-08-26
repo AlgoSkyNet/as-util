@@ -4,13 +4,9 @@
   <groupId>com.tibco.as</groupId>
   <artifactId>as-util</artifactId>
   <version>2.0.0-SNAPSHOT</version>
-  <name>ActiveSpaces Utils</name>
-  <description>Utility framework for ActiveSpaces applications</description>
   <packaging>bundle</packaging>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <name>AS Util</name>
+  <description>Utility framework for TIBCO ActiveSpaces</description>
 
   <organization>
     <name>TIBCO Software</name>
@@ -23,6 +19,10 @@
       <email>jruaux(at)tibco(dot)com</email>
     </contributor>
   </contributors>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
   <dependencies>
     <dependency>
