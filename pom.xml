@@ -69,23 +69,9 @@
         <extensions>true</extensions>
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
-          <excludeDependencies>*;scope=provided</excludeDependencies>
           <instructions>
-            <Bundle-Classpath>external:$AS_HOME$/lib/as-common.jar</Bundle-Classpath>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-            <Export-Package>com.tibco.as.space,
-              com.tibco.as.space.browser,
-              com.tibco.as.space.event,
-              com.tibco.as.space.filter,
-              com.tibco.as.space.impl,
-              com.tibco.as.space.impl.data,
-              com.tibco.as.space.impl.serializer,
-              com.tibco.as.space.listener,
-              com.tibco.as.space.persistence,
-              com.tibco.as.space.remote,
-              com.tibco.as.space.router,
-              com.tibco.as.space.security,com.tibco.as.util,
-              com.tibco.as.utils,com.tibco.as.accessors,com.tibco.as.convert,com.tibco.as.convert.array,com.tibco.as.convert.format</Export-Package>
+            <Export-Package>com.tibco.as.util,com.tibco.as.accessors,com.tibco.as.convert,com.tibco.as.convert.array,com.tibco.as.convert.format</Export-Package>
           </instructions>
         </configuration>
       </plugin>
