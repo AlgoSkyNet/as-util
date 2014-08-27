@@ -6,7 +6,7 @@
   <version>2.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>AS Util</name>
-  <description>Utility framework for TIBCO ActiveSpaces (testing github push)</description>
+  <description>Utility framework for TIBCO ActiveSpaces</description>
 
   <organization>
     <name>TIBCO Software</name>
