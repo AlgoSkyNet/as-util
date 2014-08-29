@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.tibco.as</groupId>
   <artifactId>as-util</artifactId>
-  <version>2.0.0</version>
+  <version>2.0.1</version>
   <packaging>bundle</packaging>
   <name>AS Util</name>
   <description>Utility framework for TIBCO ActiveSpaces</description>
@@ -77,7 +77,7 @@
       <plugin>
         <groupId>external.atlassian.jgitflow</groupId>
         <artifactId>jgitflow-maven-plugin</artifactId>
-        <version>1.0-m3</version>
+        <version>1.0-m4</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
