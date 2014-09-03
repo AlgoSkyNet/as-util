@@ -246,7 +246,11 @@ public class ConverterFactory {
 	}
 
 	public Class getType(FieldDef fieldDef) {
-		switch (fieldDef.getType()) {
+		return getType(fieldDef.getType());
+	}
+
+	public Class getType(FieldType fieldType) {
+		switch (fieldType) {
 		case BLOB:
 			return byte[].class;
 		case BOOLEAN:
