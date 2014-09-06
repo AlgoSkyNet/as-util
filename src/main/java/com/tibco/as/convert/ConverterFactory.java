@@ -428,7 +428,7 @@ public class ConverterFactory {
 	private boolean matches(Class from, Class to, Class candidateFrom,
 			Class candidateTo) {
 		return candidateFrom.isAssignableFrom(from)
-				&& to.isAssignableFrom(candidateTo);
+				&& candidateTo.isAssignableFrom(to);
 	}
 
 	public static Format getNumberFormat(String pattern, Format defaultFormat) {
