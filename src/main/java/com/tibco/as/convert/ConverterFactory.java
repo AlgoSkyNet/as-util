@@ -229,18 +229,12 @@ public class ConverterFactory {
 
 	public IConverter getConverter(Attributes attributes, Class from,
 			FieldDef to) throws UnsupportedConversionException {
-		if (to == null) {
-			return null;
-		}
 		Attributes nameAttributes = attributes.getAttributes(to.getName());
 		return getConverter(nameAttributes, from, getType(to));
 	}
 
 	public IConverter getConverter(Attributes attributes, FieldDef from,
 			Class to) throws UnsupportedConversionException {
-		if (from == null) {
-			return null;
-		}
 		Attributes nameAttributes = attributes.getAttributes(from.getName());
 		return getConverter(nameAttributes, getType(from), to);
 	}

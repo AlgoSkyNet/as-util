@@ -20,9 +20,6 @@ public class AccessorFactory {
 			.length();
 
 	public static ITupleAccessor create(FieldDef fieldDef) {
-		if (fieldDef == null) {
-			return null;
-		}
 		switch (fieldDef.getType()) {
 		case BLOB:
 			return new BlobAccessor(fieldDef);
