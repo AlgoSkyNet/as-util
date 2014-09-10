@@ -47,7 +47,11 @@ public class AccessorFactory {
 	public static ITupleAccessor[] create(FieldDef[] fieldDefs) {
 		ITupleAccessor[] accessors = new ITupleAccessor[fieldDefs.length];
 		for (int index = 0; index < fieldDefs.length; index++) {
-			accessors[index] = create(fieldDefs[index]);
+			FieldDef fieldDef = fieldDefs[index];
+			if (fieldDef == null) {
+				continue;
+			}
+			accessors[index] = create(fieldDef);
 		}
 		return accessors;
 	}
