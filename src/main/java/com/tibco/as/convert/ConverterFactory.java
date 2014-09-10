@@ -442,6 +442,9 @@ public class ConverterFactory {
 		IConverter[] converters = new IConverter[fieldDefs.length];
 		for (int index = 0; index < fieldDefs.length; index++) {
 			FieldDef fieldDef = fieldDefs[index];
+			if (fieldDef == null) {
+				continue;
+			}
 			Class type = index < types.length ? types[index] : types[0];
 			converters[index] = getConverter(attributes, type, fieldDef);
 		}
@@ -460,6 +463,9 @@ public class ConverterFactory {
 		IConverter[] converters = new IConverter[fieldDefs.length];
 		for (int index = 0; index < fieldDefs.length; index++) {
 			FieldDef fieldDef = fieldDefs[index];
+			if (fieldDef == null) {
+				continue;
+			}
 			Class type = index < types.length ? types[index] : types[0];
 			converters[index] = getConverter(attributes, fieldDef, type);
 		}
