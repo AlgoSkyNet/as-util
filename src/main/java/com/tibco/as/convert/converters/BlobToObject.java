@@ -18,5 +18,5 @@ public class BlobToObject implements IConverter<byte[], Object> {
 			throw new ConvertException(e, value);
 		}
 	}
-	
+
 }

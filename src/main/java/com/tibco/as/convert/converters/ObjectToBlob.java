@@ -20,5 +20,5 @@ public class ObjectToBlob implements IConverter<Object, byte[]> {
 			throw new ConvertException(e, value);
 		}
 	}
-	
+
 }

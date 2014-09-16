@@ -10,5 +10,5 @@ public class LongToBigInteger implements IConverter<Long, BigInteger> {
 	public BigInteger convert(Long value) {
 		return BigInteger.valueOf(value);
 	}
-	
+
 }

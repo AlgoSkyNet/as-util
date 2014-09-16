@@ -12,5 +12,5 @@ public class BooleanToBytes extends AbstractToBlob<Boolean> {
 	protected ByteBuffer put(ByteBuffer buffer, Boolean value) {
 		return buffer.put((byte) (value ? 1 : 0));
 	}
-	
+
 }

@@ -8,5 +8,5 @@ public class NumberToInteger implements IConverter<Number, Integer> {
 	public Integer convert(Number value) {
 		return value.intValue();
 	}
-	
+
 }

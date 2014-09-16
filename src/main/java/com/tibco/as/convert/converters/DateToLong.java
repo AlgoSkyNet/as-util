@@ -10,5 +10,5 @@ public class DateToLong implements IConverter<Date, Long> {
 	public Long convert(Date value) {
 		return value.getTime();
 	}
-	
+
 }

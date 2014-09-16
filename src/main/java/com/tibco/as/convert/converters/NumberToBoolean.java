@@ -8,5 +8,5 @@ public class NumberToBoolean implements IConverter<Number, Boolean> {
 	public Boolean convert(Number value) {
 		return value.doubleValue() != 0;
 	}
-	
+
 }

@@ -12,5 +12,5 @@ public class ShortToBytes extends AbstractToBlob<Short> {
 	protected ByteBuffer put(ByteBuffer buffer, Short value) {
 		return buffer.putShort(value);
 	}
-	
+
 }

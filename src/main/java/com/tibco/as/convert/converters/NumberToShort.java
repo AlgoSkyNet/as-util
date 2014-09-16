@@ -8,5 +8,5 @@ public class NumberToShort implements IConverter<Number, Short> {
 	public Short convert(Number value) {
 		return value.shortValue();
 	}
-	
+
 }

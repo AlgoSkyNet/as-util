@@ -8,5 +8,5 @@ public class BytesToShort extends AbstractBlobTo<Short> {
 	protected Short convert(ByteBuffer buffer) {
 		return buffer.getShort();
 	}
-	
+
 }

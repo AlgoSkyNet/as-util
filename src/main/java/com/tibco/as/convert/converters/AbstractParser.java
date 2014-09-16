@@ -12,7 +12,7 @@ public abstract class AbstractParser<T> extends AbstractStringParser<T> {
 	public AbstractParser(Format format) {
 		this.format = format;
 	}
-	
+
 	protected Object parseObject(String string) throws ConvertException {
 		try {
 			return format.parseObject(string);
