@@ -50,6 +50,7 @@ import com.tibco.as.convert.converters.ISO8601ToString;
 import com.tibco.as.convert.converters.Idem;
 import com.tibco.as.convert.converters.IntegerToBytes;
 import com.tibco.as.convert.converters.IntegerToString;
+import com.tibco.as.convert.converters.LongToBigDecimal;
 import com.tibco.as.convert.converters.LongToBigInteger;
 import com.tibco.as.convert.converters.LongToBytes;
 import com.tibco.as.convert.converters.LongToDate;
@@ -174,6 +175,7 @@ public class ConverterFactory {
 		register(Long.class, byte[].class, LongToBytes.class);
 		register(Long.class, Date.class, LongToDate.class);
 		register(Long.class, String.class, LongToString.class);
+		register(Long.class, BigDecimal.class, LongToBigDecimal.class);
 		register(Number.class, Boolean.class, NumberToBoolean.class);
 		register(Number.class, Character.class, NumberToCharacter.class);
 		register(Number.class, Double.class, NumberToDouble.class);

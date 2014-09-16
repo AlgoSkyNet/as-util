@@ -8,5 +8,5 @@ public class BytesToInteger extends AbstractBlobTo<Integer> {
 	protected Integer convert(ByteBuffer buffer) {
 		return buffer.getInt();
 	}
-	
+
 }

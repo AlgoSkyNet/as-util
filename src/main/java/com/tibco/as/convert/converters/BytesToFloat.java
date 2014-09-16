@@ -8,5 +8,5 @@ public class BytesToFloat extends AbstractBlobTo<Float> {
 	protected Float convert(ByteBuffer buffer) {
 		return buffer.getFloat();
 	}
-	
+
 }

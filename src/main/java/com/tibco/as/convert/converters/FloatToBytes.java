@@ -12,5 +12,5 @@ public class FloatToBytes extends AbstractToBlob<Float> {
 	protected ByteBuffer put(ByteBuffer buffer, Float value) {
 		return buffer.putFloat(value);
 	}
-	
+
 }

@@ -12,5 +12,5 @@ public class IntegerToBytes extends AbstractToBlob<Integer> {
 	protected ByteBuffer put(ByteBuffer buffer, Integer value) {
 		return buffer.putInt(value);
 	}
-	
+
 }

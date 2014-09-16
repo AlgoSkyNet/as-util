@@ -8,5 +8,5 @@ public class BooleanToNumber implements IConverter<Boolean, Number> {
 	public Number convert(Boolean value) {
 		return value ? 1 : 0;
 	}
-	
+
 }

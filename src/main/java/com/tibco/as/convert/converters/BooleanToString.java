@@ -8,5 +8,5 @@ public class BooleanToString extends AbstractFormatter<Boolean> {
 	public BooleanToString(Attributes attributes) {
 		super(ConverterFactory.getBooleanFormat(attributes));
 	}
-	
+
 }
