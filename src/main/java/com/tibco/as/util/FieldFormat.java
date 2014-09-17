@@ -90,23 +90,27 @@ public class FieldFormat extends Format {
 		StringTokenizer tokenizer = new StringTokenizer(source);
 		while (tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();
-			if (NAME.equals(token)) {
-				field.setName(getString(tokenizer));
-			} else if (TYPE.equals(token)) {
-				String typeName = getString(tokenizer);
-				if (typeName != null) {
-					field.setType(FieldType.valueOf(typeName.toUpperCase()));
-				}
-			} else if (NULLABLE.equals(token)) {
-				field.setNullable(getBoolean(tokenizer));
-			} else {
-				if (ENCRYPTED.equals(token)) {
-					field.setEncrypted(getBoolean(tokenizer));
-				} else if (KEY.equals(token)) {
-					field.setKey(getBoolean(tokenizer));
+			if (tokenizer.hasMoreTokens()) {
+				if (NAME.equals(token)) {
+					field.setName(getString(tokenizer));
+				} else if (TYPE.equals(token)) {
+					String typeName = getString(tokenizer);
+					if (typeName != null) {
+						field.setType(FieldType.valueOf(typeName.toUpperCase()));
+					}
+				} else if (NULLABLE.equals(token)) {
+					field.setNullable(getBoolean(tokenizer));
 				} else {
-					field.setName(token);
+					if (ENCRYPTED.equals(token)) {
+						field.setEncrypted(getBoolean(tokenizer));
+					} else if (KEY.equals(token)) {
+						field.setKey(getBoolean(tokenizer));
+					} else {
+						field.setName(token);
+					}
 				}
+			} else {
+				field.setName(token);
 			}
 		}
 		pos.setIndex(source.length());

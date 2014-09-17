@@ -64,6 +64,8 @@ public class TestFieldFormat {
 		assertEquals(true, field.isKey());
 		assertEquals(true, field.isEncrypted());
 		assertEquals(true, field.isNullable());
+		field = format.parseObject("name");
+		assertEquals("name", field.getName());
 	}
 
 }
