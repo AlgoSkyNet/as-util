@@ -1,8 +1,8 @@
 package com.tibco.as.log;
 
 import java.io.IOException;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Logger;
 
 public class LogFactory {
@@ -46,9 +46,9 @@ public class LogFactory {
 				"[%1$tFT%1$tT.%1$tL][%4$s] %5$s%n");
 		Logger logger = Logger.getLogger("com.tibco.as");
 		logger.setLevel(level.getLevel());
-		ConsoleHandler consoleHandler = new ConsoleHandler();
-		consoleHandler.setLevel(level.getLevel());
-		logger.addHandler(consoleHandler);
+		for (Handler handler : logger.getHandlers()) {
+			handler.setLevel(level.getLevel());
+		}
 		return logger;
 	}
 
