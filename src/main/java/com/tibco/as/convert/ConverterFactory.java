@@ -37,6 +37,9 @@ import com.tibco.as.convert.converters.CharacterToNumber;
 import com.tibco.as.convert.converters.CharacterToString;
 import com.tibco.as.convert.converters.DateTimeToCalendar;
 import com.tibco.as.convert.converters.DateTimeToDate;
+import com.tibco.as.convert.converters.DateTimeToSQLDate;
+import com.tibco.as.convert.converters.DateTimeToSQLTime;
+import com.tibco.as.convert.converters.DateTimeToSQLTimestamp;
 import com.tibco.as.convert.converters.DateToCalendar;
 import com.tibco.as.convert.converters.DateToDateTime;
 import com.tibco.as.convert.converters.DateToLong;
@@ -163,6 +166,10 @@ public class ConverterFactory {
 		register(Date.class, DateTime.class, DateToDateTime.class);
 		register(Date.class, Long.class, DateToLong.class);
 		register(DateTime.class, Calendar.class, DateTimeToCalendar.class);
+		register(DateTime.class, java.sql.Date.class, DateTimeToSQLDate.class);
+		register(DateTime.class, java.sql.Time.class, DateTimeToSQLTime.class);
+		register(DateTime.class, java.sql.Timestamp.class,
+				DateTimeToSQLTimestamp.class);
 		register(DateTime.class, Date.class, DateTimeToDate.class);
 		register(Double.class, BigDecimal.class, DoubleToBigDecimal.class);
 		register(Double.class, byte[].class, DoubleToBytes.class);
@@ -403,6 +410,18 @@ public class ConverterFactory {
 						new NumberToLong(),
 						new ChainedConverter<Long, Date, DateTime>(
 								new LongToDate(), new DateToDateTime()));
+			}
+		}
+		if (BigDecimal.class.isAssignableFrom(to)) {
+			if (Number.class.isAssignableFrom(from)) {
+				return new ChainedConverter<Number, Long, BigDecimal>(
+						new NumberToLong(), new LongToBigDecimal());
+			}
+		}
+		if (BigInteger.class.isAssignableFrom(to)) {
+			if (Number.class.isAssignableFrom(from)) {
+				return new ChainedConverter<Number, Long, BigInteger>(
+						new NumberToLong(), new LongToBigInteger());
 			}
 		}
 		throw new UnsupportedConversionException(from, to);

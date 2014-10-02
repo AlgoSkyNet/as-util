@@ -43,13 +43,17 @@ public class LogFactory {
 
 	public static Logger getRootLogger(LogLevel level) {
 		System.setProperty("java.util.logging.SimpleFormatter.format",
-				"[%1$tFT%1$tT.%1$tL][%4$s] %5$s%n");
-		Logger logger = Logger.getLogger("com.tibco.as");
-		logger.setLevel(level.getLevel());
-		for (Handler handler : logger.getHandlers()) {
+				"[%1$tFT%1$tT.%1$tL][%4$s] %5$s %6$s%n");
+		// Get the root logger
+		Logger rootLogger = Logger.getLogger("");
+		for (Handler handler : rootLogger.getHandlers()) {
+			// Change log level of default handler(s) of root logger
+			// The paranoid would check that this is the ConsoleHandler ;)
 			handler.setLevel(level.getLevel());
 		}
-		return logger;
+		// Set root logger level
+		rootLogger.setLevel(level.getLevel());
+		return rootLogger;
 	}
 
 }
