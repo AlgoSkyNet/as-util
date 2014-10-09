@@ -248,11 +248,11 @@ public class ConverterFactory {
 		return getConverter(nameAttributes, getType(from), to);
 	}
 
-	public Class getType(FieldDef fieldDef) {
+	public static Class getType(FieldDef fieldDef) {
 		return getType(fieldDef.getType());
 	}
 
-	public Class getType(FieldType fieldType) {
+	public static Class getType(FieldType fieldType) {
 		switch (fieldType) {
 		case BLOB:
 			return byte[].class;
@@ -277,7 +277,7 @@ public class ConverterFactory {
 		}
 	}
 
-	public FieldType getFieldType(Class clazz) {
+	public static FieldType getFieldType(Class clazz) {
 		if (byte[].class.isAssignableFrom(clazz)) {
 			return FieldType.BLOB;
 		}

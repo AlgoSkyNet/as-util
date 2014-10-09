@@ -4,8 +4,8 @@ import java.util.logging.Level;
 
 public enum LogLevel {
 
-	ERROR(Level.SEVERE), DEBUG(Level.FINE), INFO(Level.INFO), WARNING(
-			Level.WARNING), VERBOSE(Level.FINEST);
+	ERROR(Level.SEVERE), WARNING(Level.WARNING), INFO(Level.INFO), DEBUG(
+			Level.FINE), VERBOSE(Level.FINEST);
 
 	public Level level;
 

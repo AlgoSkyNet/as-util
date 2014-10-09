@@ -47,11 +47,8 @@ public class LogFactory {
 		// Get the root logger
 		Logger rootLogger = Logger.getLogger("");
 		for (Handler handler : rootLogger.getHandlers()) {
-			// Change log level of default handler(s) of root logger
-			// The paranoid would check that this is the ConsoleHandler ;)
 			handler.setLevel(level.getLevel());
 		}
-		// Set root logger level
 		rootLogger.setLevel(level.getLevel());
 		return rootLogger;
 	}
