@@ -4,7 +4,7 @@ import com.tibco.as.convert.Attribute;
 import com.tibco.as.convert.Attributes;
 import com.tibco.as.convert.format.LongFormat;
 
-public class StringToLong extends AbstractNumberParser<Long> {
+public class StringToLong extends AbstractNumberParser {
 
 	public StringToLong(Attributes attributes) {
 		super(attributes.get(Attribute.INTEGER), new LongFormat());

@@ -4,7 +4,7 @@ import com.tibco.as.convert.Attributes;
 import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.ConverterFactory;
 
-public class StringToBoolean extends AbstractParser<Boolean> {
+public class StringToBoolean extends AbstractParser {
 
 	public StringToBoolean(Attributes attributes) {
 		super(ConverterFactory.getBooleanFormat(attributes));

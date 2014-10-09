@@ -4,7 +4,7 @@ import com.tibco.as.convert.Attribute;
 import com.tibco.as.convert.Attributes;
 import com.tibco.as.convert.format.IntegerFormat;
 
-public class StringToInteger extends AbstractNumberParser<Integer> {
+public class StringToInteger extends AbstractNumberParser {
 
 	public StringToInteger(Attributes attributes) {
 		super(attributes.get(Attribute.INTEGER), new IntegerFormat());

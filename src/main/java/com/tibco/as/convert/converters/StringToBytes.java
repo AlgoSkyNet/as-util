@@ -4,7 +4,7 @@ import com.tibco.as.convert.Attributes;
 import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.ConverterFactory;
 
-public class StringToBytes extends AbstractParser<byte[]> {
+public class StringToBytes extends AbstractParser {
 
 	public StringToBytes(Attributes attributes) {
 		super(ConverterFactory.getBlobFormat(attributes));

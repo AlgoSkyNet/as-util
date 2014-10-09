@@ -4,7 +4,7 @@ import com.tibco.as.convert.Attribute;
 import com.tibco.as.convert.Attributes;
 import com.tibco.as.convert.format.DoubleFormat;
 
-public class StringToDouble extends AbstractNumberParser<Double> {
+public class StringToDouble extends AbstractNumberParser {
 
 	public StringToDouble(Attributes attributes) {
 		super(attributes.get(Attribute.DECIMAL), new DoubleFormat());

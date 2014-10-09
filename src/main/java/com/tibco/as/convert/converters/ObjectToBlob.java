@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.IConverter;
 
-public class ObjectToBlob implements IConverter<Object, byte[]> {
+public class ObjectToBlob implements IConverter {
 
 	@Override
 	public byte[] convert(Object value) throws ConvertException {

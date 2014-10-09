@@ -5,7 +5,7 @@ import java.net.URL;
 
 import com.tibco.as.convert.ConvertException;
 
-public class StringToURL extends AbstractStringParser<URL> {
+public class StringToURL extends AbstractStringParser {
 
 	@Override
 	protected URL parse(String string) throws ConvertException {

@@ -4,10 +4,10 @@ import java.util.Date;
 
 import com.tibco.as.convert.IConverter;
 
-public class LongToDate implements IConverter<Long, Date> {
+public class LongToDate implements IConverter {
 
 	@Override
-	public Date convert(Long value) {
-		return new Date(value);
+	public Date convert(Object value) {
+		return new Date((Long) value);
 	}
 }

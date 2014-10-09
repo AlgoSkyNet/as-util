@@ -3,7 +3,7 @@ package com.tibco.as.convert;
 import com.tibco.as.accessors.ITupleAccessor;
 import com.tibco.as.space.Tuple;
 
-public abstract class TupleToObjectConverter<T> implements IConverter<Tuple, T> {
+public abstract class TupleToObjectConverter implements IConverter {
 
 	private ITupleAccessor[] accessors;
 
@@ -12,14 +12,14 @@ public abstract class TupleToObjectConverter<T> implements IConverter<Tuple, T> 
 	}
 
 	@Override
-	public T convert(Tuple tuple) throws ConvertException {
-		T result = newInstance();
+	public Object convert(Object tuple) throws ConvertException {
+		Object result = newInstance();
 		for (int index = 0; index < accessors.length; index++) {
 			ITupleAccessor accessor = accessors[index];
 			if (accessor == null) {
 				continue;
 			}
-			Object value = accessor.get(tuple);
+			Object value = accessor.get((Tuple) tuple);
 			if (value == null) {
 				continue;
 			}
@@ -32,11 +32,11 @@ public abstract class TupleToObjectConverter<T> implements IConverter<Tuple, T> 
 		return result;
 	}
 
-	protected abstract T newInstance();
+	protected abstract Object newInstance();
 
 	protected abstract Object convert(Object value, int index)
 			throws ConvertException;
 
-	protected abstract void set(T element, Object value, int index);
+	protected abstract void set(Object element, Object value, int index);
 
 }

@@ -6,13 +6,13 @@ import java.io.ObjectInputStream;
 import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.IConverter;
 
-public class BlobToObject implements IConverter<byte[], Object> {
+public class BlobToObject implements IConverter {
 
 	@Override
-	public Object convert(byte[] value) throws ConvertException {
+	public Object convert(Object value) throws ConvertException {
+		ByteArrayInputStream bais = new ByteArrayInputStream((byte[]) value);
 		try {
-			ObjectInputStream ois = new ObjectInputStream(
-					new ByteArrayInputStream((byte[]) value));
+			ObjectInputStream ois = new ObjectInputStream(bais);
 			return ois.readObject();
 		} catch (Exception e) {
 			throw new ConvertException(e, value);

@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.tibco.as.convert.ConvertException;
 
-public class StringToDate extends AbstractParser<Date> {
+public class StringToDate extends AbstractParser {
 
 	public StringToDate(DateFormat format) {
 		super(format);

@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 
 import com.tibco.as.convert.IConverter;
 
-public class LongToBigDecimal implements IConverter<Long, BigDecimal> {
+public class LongToBigDecimal implements IConverter {
 
 	@Override
-	public BigDecimal convert(Long value) {
-		return BigDecimal.valueOf(value);
+	public BigDecimal convert(Object value) {
+		return BigDecimal.valueOf((Long) value);
 	}
 
 }

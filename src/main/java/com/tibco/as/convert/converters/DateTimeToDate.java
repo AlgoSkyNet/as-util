@@ -5,10 +5,10 @@ import java.util.Date;
 import com.tibco.as.convert.IConverter;
 import com.tibco.as.space.DateTime;
 
-public class DateTimeToDate implements IConverter<DateTime, Date> {
+public class DateTimeToDate implements IConverter {
 
 	@Override
-	public Date convert(DateTime value) {
-		return value.getTime().getTime();
+	public Date convert(Object value) {
+		return ((DateTime) value).getTime().getTime();
 	}
 }

@@ -4,11 +4,11 @@ import java.net.URL;
 
 import com.tibco.as.convert.IConverter;
 
-public class URLToString implements IConverter<URL, String> {
+public class URLToString implements IConverter {
 
 	@Override
-	public String convert(URL value) {
-		return value.toExternalForm();
+	public String convert(Object value) {
+		return ((URL) value).toExternalForm();
 	}
 
 }

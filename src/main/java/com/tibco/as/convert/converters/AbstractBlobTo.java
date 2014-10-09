@@ -4,13 +4,13 @@ import java.nio.ByteBuffer;
 
 import com.tibco.as.convert.IConverter;
 
-public abstract class AbstractBlobTo<T> implements IConverter<byte[], T> {
+public abstract class AbstractBlobTo implements IConverter {
 
 	@Override
-	public T convert(byte[] value) {
-		return convert(ByteBuffer.wrap(value));
+	public Object convert(Object value) {
+		return convert(ByteBuffer.wrap((byte[]) value));
 	}
 
-	protected abstract T convert(ByteBuffer buffer);
+	protected abstract Object convert(ByteBuffer buffer);
 
 }

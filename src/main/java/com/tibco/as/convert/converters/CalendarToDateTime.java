@@ -5,11 +5,11 @@ import java.util.Calendar;
 import com.tibco.as.convert.IConverter;
 import com.tibco.as.space.DateTime;
 
-public class CalendarToDateTime implements IConverter<Calendar, DateTime> {
+public class CalendarToDateTime implements IConverter {
 
 	@Override
-	public DateTime convert(Calendar value) {
-		return DateTime.create(value);
+	public DateTime convert(Object value) {
+		return DateTime.create((Calendar) value);
 	}
 
 }

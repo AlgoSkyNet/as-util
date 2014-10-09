@@ -2,11 +2,11 @@ package com.tibco.as.convert.converters;
 
 import com.tibco.as.convert.IConverter;
 
-public class BooleanToNumber implements IConverter<Boolean, Number> {
+public class BooleanToNumber implements IConverter {
 
 	@Override
-	public Number convert(Boolean value) {
-		return value ? 1 : 0;
+	public Number convert(Object value) {
+		return (Boolean) value ? 1 : 0;
 	}
 
 }

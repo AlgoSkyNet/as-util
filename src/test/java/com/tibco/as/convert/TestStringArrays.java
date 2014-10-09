@@ -19,7 +19,6 @@ public class TestStringArrays {
 
 	private ConverterFactory factory = new ConverterFactory();
 
-	@SuppressWarnings("rawtypes")
 	@Test
 	public void testStringArrayToTuple() throws Exception {
 		String spaceName = "space1";
@@ -36,14 +35,13 @@ public class TestStringArrays {
 		ITupleAccessor[] accessors = AccessorFactory.create(spaceDef);
 		IConverter[] converters = factory.getConverters(attributes,
 				String.class, spaceDef);
-		ArrayToTupleConverter<String> converter = new ArrayToTupleConverter<String>(
-				accessors, converters);
+		ArrayToTupleConverter converter = new ArrayToTupleConverter(accessors,
+				converters);
 		String[] array = { "P1,000", "2,000", "3,000", "4,000" };
 		Tuple tuple = converter.convert(array);
 		Assert.assertEquals(1000, tuple.getInt("field1").intValue());
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Test
 	public void testTupleToStringArray() throws Exception {
 		SpaceDef spaceDef = SpaceDef.create("space1");
@@ -64,9 +62,9 @@ public class TestStringArrays {
 		ITupleAccessor[] accessors = AccessorFactory.create(spaceDef);
 		IConverter[] converters = factory.getConverters(attributes, spaceDef,
 				String.class);
-		TupleToArrayConverter<String> converter = new TupleToArrayConverter<String>(
-				accessors, converters, String.class);
-		String[] array = converter.convert(tuple);
+		TupleToArrayConverter converter = new TupleToArrayConverter(accessors,
+				converters);
+		Object[] array = (Object[]) converter.convert(tuple);
 		Assert.assertEquals("P1,000", array[0]);
 	}
 }

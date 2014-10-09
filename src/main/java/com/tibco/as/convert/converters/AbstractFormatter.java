@@ -5,7 +5,7 @@ import java.text.Format;
 import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.IConverter;
 
-public abstract class AbstractFormatter<T> implements IConverter<T, String> {
+public abstract class AbstractFormatter implements IConverter {
 
 	private Format format;
 
@@ -14,7 +14,7 @@ public abstract class AbstractFormatter<T> implements IConverter<T, String> {
 	}
 
 	@Override
-	public String convert(T source) throws ConvertException {
+	public String convert(Object source) throws ConvertException {
 		try {
 			return format.format(source);
 		} catch (IllegalArgumentException e) {

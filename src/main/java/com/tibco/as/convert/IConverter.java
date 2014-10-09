@@ -6,11 +6,11 @@ package com.tibco.as.convert;
  * @author Julien Ruaux
  * 
  */
-public interface IConverter<S, T> {
+public interface IConverter {
 
 	/**
-	 * Converts given S to type T.
+	 * Converts given object
 	 */
-	T convert(S source) throws ConvertException;
+	Object convert(Object source) throws ConvertException;
 
 }

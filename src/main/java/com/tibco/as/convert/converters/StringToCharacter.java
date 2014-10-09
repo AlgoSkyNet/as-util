@@ -2,7 +2,7 @@ package com.tibco.as.convert.converters;
 
 import com.tibco.as.convert.ConvertException;
 
-public class StringToCharacter extends AbstractStringParser<Character> {
+public class StringToCharacter extends AbstractStringParser {
 
 	@Override
 	protected Character parse(String value) throws ConvertException {

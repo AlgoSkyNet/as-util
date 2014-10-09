@@ -9,9 +9,7 @@ import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.IConverter;
 import com.tibco.as.space.Tuple;
 
-@SuppressWarnings("rawtypes")
-public class TupleToMapConverter<T> implements
-		IConverter<Tuple, Map<String, T>> {
+public class TupleToMapConverter implements IConverter {
 
 	private Map<String, ITupleAccessor> accessors;
 	private Map<String, IConverter> converters;
@@ -22,10 +20,10 @@ public class TupleToMapConverter<T> implements
 		this.converters = converters;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Map<String, T> convert(Tuple tuple) throws ConvertException {
-		Map<String, T> map = new HashMap<String, T>();
+	public Map<String, Object> convert(Object source) throws ConvertException {
+		Tuple tuple = (Tuple) source;
+		Map<String, Object> map = new HashMap<String, Object>();
 		for (Entry<String, ITupleAccessor> entry : accessors.entrySet()) {
 			Object value = entry.getValue().get(tuple);
 			if (value == null) {
@@ -36,7 +34,7 @@ public class TupleToMapConverter<T> implements
 			if (converter == null) {
 				continue;
 			}
-			map.put(fieldName, (T) converter.convert(value));
+			map.put(fieldName, converter.convert(value));
 		}
 		return map;
 	}

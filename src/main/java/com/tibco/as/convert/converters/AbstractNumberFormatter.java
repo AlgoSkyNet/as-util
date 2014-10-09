@@ -4,8 +4,7 @@ import java.text.Format;
 
 import com.tibco.as.convert.ConverterFactory;
 
-public abstract class AbstractNumberFormatter<S extends Number> extends
-		AbstractFormatter<S> {
+public abstract class AbstractNumberFormatter extends AbstractFormatter {
 
 	public AbstractNumberFormatter(String pattern, Format defaultFormat) {
 		super(ConverterFactory.getNumberFormat(pattern, defaultFormat));

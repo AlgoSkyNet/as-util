@@ -4,10 +4,10 @@ import java.math.BigInteger;
 
 import com.tibco.as.convert.IConverter;
 
-public class BytesToBigInteger implements IConverter<byte[], BigInteger> {
+public class BytesToBigInteger implements IConverter {
 
 	@Override
-	public BigInteger convert(byte[] value) {
-		return new BigInteger(value);
+	public BigInteger convert(Object value) {
+		return new BigInteger((byte[]) value);
 	}
 }

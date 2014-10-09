@@ -2,11 +2,11 @@ package com.tibco.as.convert.converters;
 
 import com.tibco.as.convert.IConverter;
 
-public class CharacterToNumber implements IConverter<Character, Number> {
+public class CharacterToNumber implements IConverter {
 
 	@Override
-	public Number convert(Character value) {
-		return Character.getNumericValue(value);
+	public Number convert(Object value) {
+		return Character.getNumericValue((Character) value);
 	}
 
 }

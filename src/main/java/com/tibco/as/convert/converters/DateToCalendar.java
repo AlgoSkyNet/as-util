@@ -6,12 +6,12 @@ import java.util.Date;
 import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.IConverter;
 
-public class DateToCalendar implements IConverter<Date, Calendar> {
+public class DateToCalendar implements IConverter {
 
 	@Override
-	public Calendar convert(Date date) throws ConvertException {
+	public Calendar convert(Object date) throws ConvertException {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
+		calendar.setTime((Date) date);
 		return calendar;
 	}
 

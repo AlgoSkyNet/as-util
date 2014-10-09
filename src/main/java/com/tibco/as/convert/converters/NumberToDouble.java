@@ -2,11 +2,11 @@ package com.tibco.as.convert.converters;
 
 import com.tibco.as.convert.IConverter;
 
-public class NumberToDouble implements IConverter<Number, Double> {
+public class NumberToDouble implements IConverter {
 
 	@Override
-	public Double convert(Number value) {
-		return value.doubleValue();
+	public Double convert(Object value) {
+		return ((Number) value).doubleValue();
 	}
 
 }

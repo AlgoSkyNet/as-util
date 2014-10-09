@@ -5,11 +5,11 @@ import java.util.Date;
 import com.tibco.as.convert.IConverter;
 import com.tibco.as.space.DateTime;
 
-public class DateToDateTime implements IConverter<Date, DateTime> {
+public class DateToDateTime implements IConverter {
 
 	@Override
-	public DateTime convert(Date value) {
-		return DateTime.create(value.getTime());
+	public DateTime convert(Object value) {
+		return DateTime.create(((Date) value).getTime());
 	}
 
 }

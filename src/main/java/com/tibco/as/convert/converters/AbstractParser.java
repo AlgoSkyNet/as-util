@@ -5,7 +5,7 @@ import java.text.ParseException;
 
 import com.tibco.as.convert.ConvertException;
 
-public abstract class AbstractParser<T> extends AbstractStringParser<T> {
+public abstract class AbstractParser extends AbstractStringParser {
 
 	Format format;
 

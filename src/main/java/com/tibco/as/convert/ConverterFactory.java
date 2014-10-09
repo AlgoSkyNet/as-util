@@ -351,8 +351,8 @@ public class ConverterFactory {
 		if (Date.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
 				if (attributes.get(Attribute.DATE) == null) {
-					return new ChainedConverter<Date, Calendar, String>(
-							new DateToCalendar(), new ISO8601ToString());
+					return new ChainedConverter(new DateToCalendar(),
+							new ISO8601ToString());
 				}
 				return new DateToString(getDateFormat(attributes));
 			}
@@ -362,16 +362,15 @@ public class ConverterFactory {
 				if (attributes.get(Attribute.DATE) == null) {
 					return new ISO8601ToString();
 				}
-				return new ChainedConverter<Calendar, Date, String>(
-						new CalendarToDate(), new DateToString(
-								getDateFormat(attributes)));
+				return new ChainedConverter(new CalendarToDate(),
+						new DateToString(getDateFormat(attributes)));
 			}
 		}
 		if (Date.class.isAssignableFrom(to)) {
 			if (String.class.isAssignableFrom(from)) {
 				if (attributes.get(Attribute.DATE) == null) {
-					return new ChainedConverter<String, Calendar, Date>(
-							new StringToISO8601(), new CalendarToDate());
+					return new ChainedConverter(new StringToISO8601(),
+							new CalendarToDate());
 				}
 				return new StringToDate(getDateFormat(attributes));
 			}
@@ -381,47 +380,42 @@ public class ConverterFactory {
 				if (attributes.get(Attribute.DATE) == null) {
 					return new StringToISO8601();
 				}
-				return new ChainedConverter<String, Date, Calendar>(
-						new StringToDate(getDateFormat(attributes)),
-						new DateToCalendar());
+				return new ChainedConverter(new StringToDate(
+						getDateFormat(attributes)), new DateToCalendar());
 			}
 		}
 		if (DateTime.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				return new ChainedConverter<DateTime, Calendar, String>(
-						new DateTimeToCalendar(), getConverter(attributes,
-								Calendar.class, String.class));
+				return new ChainedConverter(new DateTimeToCalendar(),
+						getConverter(attributes, Calendar.class, String.class));
 			}
 			if (Number.class.isAssignableFrom(to)) {
-				return new ChainedConverter<DateTime, Long, Number>(
-						new ChainedConverter<DateTime, Date, Long>(
-								new DateTimeToDate(), new DateToLong()),
-						getConverter(attributes, Long.class, to));
+				return new ChainedConverter(new ChainedConverter(
+						new DateTimeToDate(), new DateToLong()), getConverter(
+						attributes, Long.class, to));
 			}
 		}
 		if (DateTime.class.isAssignableFrom(to)) {
 			if (String.class.isAssignableFrom(from)) {
-				return new ChainedConverter<String, Calendar, DateTime>(
-						getConverter(attributes, String.class, Calendar.class),
-						new CalendarToDateTime());
+				return new ChainedConverter(getConverter(attributes,
+						String.class, Calendar.class), new CalendarToDateTime());
 			}
 			if (Number.class.isAssignableFrom(from)) {
-				return new ChainedConverter<Number, Long, DateTime>(
-						new NumberToLong(),
-						new ChainedConverter<Long, Date, DateTime>(
-								new LongToDate(), new DateToDateTime()));
+				return new ChainedConverter(new NumberToLong(),
+						new ChainedConverter(new LongToDate(),
+								new DateToDateTime()));
 			}
 		}
 		if (BigDecimal.class.isAssignableFrom(to)) {
 			if (Number.class.isAssignableFrom(from)) {
-				return new ChainedConverter<Number, Long, BigDecimal>(
-						new NumberToLong(), new LongToBigDecimal());
+				return new ChainedConverter(new NumberToLong(),
+						new LongToBigDecimal());
 			}
 		}
 		if (BigInteger.class.isAssignableFrom(to)) {
 			if (Number.class.isAssignableFrom(from)) {
-				return new ChainedConverter<Number, Long, BigInteger>(
-						new NumberToLong(), new LongToBigInteger());
+				return new ChainedConverter(new NumberToLong(),
+						new LongToBigInteger());
 			}
 		}
 		throw new UnsupportedConversionException(from, to);

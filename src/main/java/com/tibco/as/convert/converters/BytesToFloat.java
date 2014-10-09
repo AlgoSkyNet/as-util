@@ -2,7 +2,7 @@ package com.tibco.as.convert.converters;
 
 import java.nio.ByteBuffer;
 
-public class BytesToFloat extends AbstractBlobTo<Float> {
+public class BytesToFloat extends AbstractBlobTo {
 
 	@Override
 	protected Float convert(ByteBuffer buffer) {

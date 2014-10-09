@@ -7,11 +7,11 @@ import javax.xml.bind.DatatypeConverter;
 import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.IConverter;
 
-public class ISO8601ToString implements IConverter<Calendar, String> {
+public class ISO8601ToString implements IConverter {
 
 	@Override
-	public String convert(Calendar source) throws ConvertException {
-		return DatatypeConverter.printDateTime(source);
+	public String convert(Object source) throws ConvertException {
+		return DatatypeConverter.printDateTime((Calendar) source);
 	}
 
 }

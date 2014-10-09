@@ -4,8 +4,7 @@ import com.tibco.as.accessors.ITupleAccessor;
 import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.IConverter;
 
-@SuppressWarnings("rawtypes")
-public class ArrayToTupleConverter<T> extends AbstractArrayToTupleConverter<T> {
+public class ArrayToTupleConverter extends AbstractArrayToTupleConverter {
 
 	private IConverter[] converters;
 
@@ -15,9 +14,8 @@ public class ArrayToTupleConverter<T> extends AbstractArrayToTupleConverter<T> {
 		this.converters = converters;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected Object convert(T value, int index) throws ConvertException {
+	protected Object convert(Object value, int index) throws ConvertException {
 		if (value == null) {
 			return null;
 		}

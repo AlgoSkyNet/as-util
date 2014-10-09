@@ -4,11 +4,11 @@ import java.math.BigInteger;
 
 import com.tibco.as.convert.IConverter;
 
-public class BigIntegerToBytes implements IConverter<BigInteger, byte[]> {
+public class BigIntegerToBytes implements IConverter {
 
 	@Override
-	public byte[] convert(BigInteger value) {
-		return value.toByteArray();
+	public byte[] convert(Object value) {
+		return ((BigInteger) value).toByteArray();
 	}
 
 }

@@ -2,7 +2,7 @@ package com.tibco.as.convert.converters;
 
 import java.nio.ByteBuffer;
 
-public class BytesToBoolean extends AbstractBlobTo<Boolean> {
+public class BytesToBoolean extends AbstractBlobTo {
 
 	@Override
 	protected Boolean convert(ByteBuffer buffer) {

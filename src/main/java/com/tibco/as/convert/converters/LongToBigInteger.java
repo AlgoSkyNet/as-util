@@ -4,11 +4,10 @@ import java.math.BigInteger;
 
 import com.tibco.as.convert.IConverter;
 
-public class LongToBigInteger implements IConverter<Long, BigInteger> {
+public class LongToBigInteger implements IConverter {
 
 	@Override
-	public BigInteger convert(Long value) {
-		return BigInteger.valueOf(value);
+	public BigInteger convert(Object value) {
+		return BigInteger.valueOf((Long) value);
 	}
-
 }

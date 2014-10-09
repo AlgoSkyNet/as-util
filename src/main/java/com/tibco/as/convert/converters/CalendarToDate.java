@@ -6,11 +6,11 @@ import java.util.Date;
 import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.IConverter;
 
-public class CalendarToDate implements IConverter<Calendar, Date> {
+public class CalendarToDate implements IConverter {
 
 	@Override
-	public Date convert(Calendar calendar) throws ConvertException {
-		return calendar.getTime();
+	public Date convert(Object source) throws ConvertException {
+		return ((Calendar) source).getTime();
 	}
 
 }
