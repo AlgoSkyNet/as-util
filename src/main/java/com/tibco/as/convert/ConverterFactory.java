@@ -239,17 +239,13 @@ public class ConverterFactory {
 	public IConverter getConverter(Attributes attributes, Class from,
 			FieldDef to) throws UnsupportedConversionException {
 		Attributes nameAttributes = attributes.getAttributes(to.getName());
-		return getConverter(nameAttributes, from, getType(to));
+		return getConverter(nameAttributes, from, getType(to.getType()));
 	}
 
 	public IConverter getConverter(Attributes attributes, FieldDef from,
 			Class to) throws UnsupportedConversionException {
 		Attributes nameAttributes = attributes.getAttributes(from.getName());
-		return getConverter(nameAttributes, getType(from), to);
-	}
-
-	public static Class getType(FieldDef fieldDef) {
-		return getType(fieldDef.getType());
+		return getConverter(nameAttributes, getType(from.getType()), to);
 	}
 
 	public static Class getType(FieldType fieldType) {
@@ -510,11 +506,6 @@ public class ConverterFactory {
 	public IConverter[] getConverters(Attributes attributes, SpaceDef spaceDef,
 			Class type) throws UnsupportedConversionException {
 		return getConverters(attributes, getFieldDefs(spaceDef), type);
-	}
-
-	public IConverter getConverter(FieldDef fieldDef)
-			throws UnsupportedConversionException {
-		return getConverter(fieldDef, getType(fieldDef));
 	}
 
 	public static DateFormat getDateFormat(String pattern, TimeZone timeZone) {

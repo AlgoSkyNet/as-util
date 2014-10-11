@@ -1,6 +1,11 @@
 package com.tibco.as.accessors;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 import com.tibco.as.space.FieldDef;
+import com.tibco.as.space.FieldDef.FieldType;
 import com.tibco.as.space.SpaceDef;
 
 /**
@@ -19,46 +24,50 @@ public class AccessorFactory {
 	public final static int SHORT_SIZE = Short.toString(Short.MAX_VALUE)
 			.length();
 
-	public static ITupleAccessor create(FieldDef fieldDef) {
-		switch (fieldDef.getType()) {
+	public static ITupleAccessor create(String fieldName, FieldType fieldType) {
+		switch (fieldType) {
 		case BLOB:
-			return new BlobAccessor(fieldDef);
+			return new BlobAccessor(fieldName);
 		case BOOLEAN:
-			return new BooleanAccessor(fieldDef);
+			return new BooleanAccessor(fieldName);
 		case CHAR:
-			return new CharacterAccessor(fieldDef);
+			return new CharacterAccessor(fieldName);
 		case DATETIME:
-			return new DateTimeAccessor(fieldDef);
+			return new DateTimeAccessor(fieldName);
 		case DOUBLE:
-			return new DoubleAccessor(fieldDef);
+			return new DoubleAccessor(fieldName);
 		case FLOAT:
-			return new FloatAccessor(fieldDef);
+			return new FloatAccessor(fieldName);
 		case INTEGER:
-			return new IntegerAccessor(fieldDef);
+			return new IntegerAccessor(fieldName);
 		case LONG:
-			return new LongAccessor(fieldDef);
+			return new LongAccessor(fieldName);
 		case SHORT:
-			return new ShortAccessor(fieldDef);
+			return new ShortAccessor(fieldName);
 		default:
-			return new StringAccessor(fieldDef);
+			return new StringAccessor(fieldName);
 		}
 	}
 
-	public static ITupleAccessor[] create(FieldDef[] fieldDefs) {
-		ITupleAccessor[] accessors = new ITupleAccessor[fieldDefs.length];
-		for (int index = 0; index < fieldDefs.length; index++) {
-			FieldDef fieldDef = fieldDefs[index];
+	public static ITupleAccessor[] create(FieldDef... fieldDefs) {
+		Collection<ITupleAccessor> accessors = create(Arrays.asList(fieldDefs));
+		return accessors.toArray(new ITupleAccessor[accessors.size()]);
+	}
+
+	private static Collection<ITupleAccessor> create(
+			Collection<FieldDef> fieldDefs) {
+		Collection<ITupleAccessor> accessors = new ArrayList<ITupleAccessor>();
+		for (FieldDef fieldDef : fieldDefs) {
 			if (fieldDef == null) {
 				continue;
 			}
-			accessors[index] = create(fieldDef);
+			accessors.add(create(fieldDef.getName(), fieldDef.getType()));
 		}
 		return accessors;
 	}
 
-	public static ITupleAccessor[] create(SpaceDef spaceDef) {
-		return create(spaceDef.getFieldDefs().toArray(
-				new FieldDef[spaceDef.getFieldDefs().size()]));
+	public static Collection<ITupleAccessor> create(SpaceDef spaceDef) {
+		return create(spaceDef.getFieldDefs());
 	}
 
 }

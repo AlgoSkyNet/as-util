@@ -1,22 +1,22 @@
 package com.tibco.as.accessors;
 
 import com.tibco.as.space.DateTime;
-import com.tibco.as.space.FieldDef;
 import com.tibco.as.space.Tuple;
 
-public class DateTimeAccessor extends TupleAccessor {
+public class DateTimeAccessor implements ITupleAccessor {
 
-	public DateTimeAccessor(FieldDef fieldDef) {
-		super(fieldDef);
+	private String fieldName;
+
+	public DateTimeAccessor(String fieldName) {
+		this.fieldName = fieldName;
 	}
 
-	@Override
-	protected Object get(Tuple tuple, String fieldName) {
+	public Object get(Tuple tuple) {
 		return tuple.getDateTime(fieldName);
 	}
 
 	@Override
-	protected Object set(Tuple tuple, String fieldName, Object value) {
+	public Object set(Tuple tuple, Object value) {
 		return tuple.putDateTime(fieldName, (DateTime) value);
 	}
 

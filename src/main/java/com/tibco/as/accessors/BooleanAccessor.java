@@ -1,21 +1,22 @@
 package com.tibco.as.accessors;
 
-import com.tibco.as.space.FieldDef;
 import com.tibco.as.space.Tuple;
 
-public class BooleanAccessor extends TupleAccessor {
+public class BooleanAccessor implements ITupleAccessor {
 
-	public BooleanAccessor(FieldDef fieldDef) {
-		super(fieldDef);
+	private String fieldName;
+
+	public BooleanAccessor(String fieldName) {
+		this.fieldName = fieldName;
 	}
 
 	@Override
-	protected Object get(Tuple tuple, String fieldName) {
+	public Object get(Tuple tuple) {
 		return tuple.getBoolean(fieldName);
 	}
 
 	@Override
-	protected Object set(Tuple tuple, String fieldName, Object value) {
+	public Object set(Tuple tuple, Object value) {
 		return tuple.putBoolean(fieldName, (Boolean) value);
 	}
 

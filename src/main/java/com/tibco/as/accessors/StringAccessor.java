@@ -1,21 +1,22 @@
 package com.tibco.as.accessors;
 
-import com.tibco.as.space.FieldDef;
 import com.tibco.as.space.Tuple;
 
-public class StringAccessor extends TupleAccessor {
+public class StringAccessor implements ITupleAccessor {
 
-	public StringAccessor(FieldDef fieldDef) {
-		super(fieldDef);
+	private String fieldName;
+
+	public StringAccessor(String fieldName) {
+		this.fieldName = fieldName;
 	}
 
 	@Override
-	protected Object get(Tuple tuple, String fieldName) {
+	public Object get(Tuple tuple) {
 		return tuple.getString(fieldName);
 	}
 
 	@Override
-	protected Object set(Tuple tuple, String fieldName, Object value) {
+	public Object set(Tuple tuple, Object value) {
 		return tuple.putString(fieldName, (String) value);
 	}
 

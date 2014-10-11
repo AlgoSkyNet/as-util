@@ -1,21 +1,22 @@
 package com.tibco.as.accessors;
 
-import com.tibco.as.space.FieldDef;
 import com.tibco.as.space.Tuple;
 
-public class ShortAccessor extends TupleAccessor {
+public class ShortAccessor implements ITupleAccessor {
 
-	public ShortAccessor(FieldDef fieldDef) {
-		super(fieldDef);
+	private String fieldName;
+
+	public ShortAccessor(String fieldName) {
+		this.fieldName = fieldName;
 	}
 
 	@Override
-	protected Object get(Tuple tuple, String fieldName) {
+	public Object get(Tuple tuple) {
 		return tuple.getShort(fieldName);
 	}
 
 	@Override
-	protected Object set(Tuple tuple, String fieldName, Object value) {
+	public Object set(Tuple tuple, Object value) {
 		return tuple.putShort(fieldName, (Short) value);
 	}
 

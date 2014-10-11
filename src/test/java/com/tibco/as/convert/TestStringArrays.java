@@ -32,10 +32,11 @@ public class TestStringArrays {
 		Attributes attributes = new Attributes();
 		attributes.put(Attribute.INTEGER, "#,###");
 		attributes.put(Attribute.INTEGER, "'P'#,###", "field1");
-		ITupleAccessor[] accessors = AccessorFactory.create(spaceDef);
+		Collection<ITupleAccessor> accessors = AccessorFactory.create(spaceDef);
 		IConverter[] converters = factory.getConverters(attributes,
 				String.class, spaceDef);
-		ArrayToTupleConverter converter = new ArrayToTupleConverter(accessors,
+		ArrayToTupleConverter converter = new ArrayToTupleConverter(
+				accessors.toArray(new ITupleAccessor[accessors.size()]),
 				converters);
 		String[] array = { "P1,000", "2,000", "3,000", "4,000" };
 		Tuple tuple = converter.convert(array);
@@ -59,10 +60,11 @@ public class TestStringArrays {
 		tuple.putInt("field2", 2000);
 		tuple.putInt("field3", 3000);
 		tuple.putInt("field4", 4000);
-		ITupleAccessor[] accessors = AccessorFactory.create(spaceDef);
+		Collection<ITupleAccessor> accessors = AccessorFactory.create(spaceDef);
 		IConverter[] converters = factory.getConverters(attributes, spaceDef,
 				String.class);
-		TupleToArrayConverter converter = new TupleToArrayConverter(accessors,
+		TupleToArrayConverter converter = new TupleToArrayConverter(
+				accessors.toArray(new ITupleAccessor[accessors.size()]),
 				converters);
 		Object[] array = (Object[]) converter.convert(tuple);
 		Assert.assertEquals("P1,000", array[0]);

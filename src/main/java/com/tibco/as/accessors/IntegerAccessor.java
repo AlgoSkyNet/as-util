@@ -1,21 +1,22 @@
 package com.tibco.as.accessors;
 
-import com.tibco.as.space.FieldDef;
 import com.tibco.as.space.Tuple;
 
-public class IntegerAccessor extends TupleAccessor {
+public class IntegerAccessor implements ITupleAccessor {
 
-	public IntegerAccessor(FieldDef fieldDef) {
-		super(fieldDef);
+	private String fieldName;
+
+	public IntegerAccessor(String fieldName) {
+		this.fieldName = fieldName;
 	}
 
 	@Override
-	protected Object get(Tuple tuple, String fieldName) {
+	public Object get(Tuple tuple) {
 		return tuple.getInt(fieldName);
 	}
 
 	@Override
-	protected Object set(Tuple tuple, String fieldName, Object value) {
+	public Object set(Tuple tuple, Object value) {
 		return tuple.putInt(fieldName, (Integer) value);
 	}
 

@@ -1,21 +1,22 @@
 package com.tibco.as.accessors;
 
-import com.tibco.as.space.FieldDef;
 import com.tibco.as.space.Tuple;
 
-public class BlobAccessor extends TupleAccessor {
+public class BlobAccessor implements ITupleAccessor {
 
-	public BlobAccessor(FieldDef fieldDef) {
-		super(fieldDef);
+	private String fieldName;
+
+	public BlobAccessor(String fieldName) {
+		this.fieldName = fieldName;
 	}
 
 	@Override
-	protected Object get(Tuple tuple, String fieldName) {
+	public Object get(Tuple tuple) {
 		return tuple.getBlob(fieldName);
 	}
-	
+
 	@Override
-	protected Object set(Tuple tuple, String fieldName, Object value) {
+	public Object set(Tuple tuple, Object value) {
 		return tuple.putBlob(fieldName, (byte[]) value);
 	}
 
