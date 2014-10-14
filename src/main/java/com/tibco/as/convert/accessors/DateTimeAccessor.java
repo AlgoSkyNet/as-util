@@ -1,4 +1,4 @@
-package com.tibco.as.accessors;
+package com.tibco.as.convert.accessors;
 
 import com.tibco.as.space.DateTime;
 import com.tibco.as.space.Tuple;

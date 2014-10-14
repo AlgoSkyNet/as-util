@@ -1,4 +1,4 @@
-package com.tibco.as.accessors;
+package com.tibco.as.convert;
 
 /**
  * Abstracts the notion of a field. Defines a strategy for accessing the value

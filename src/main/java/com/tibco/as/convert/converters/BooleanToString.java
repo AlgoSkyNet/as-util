@@ -1,12 +1,12 @@
 package com.tibco.as.convert.converters;
 
-import com.tibco.as.convert.Attributes;
 import com.tibco.as.convert.ConverterFactory;
+import com.tibco.as.convert.Field;
 
 public class BooleanToString extends AbstractFormatter {
 
-	public BooleanToString(Attributes attributes) {
-		super(ConverterFactory.getBooleanFormat(attributes));
+	public BooleanToString(Field field) {
+		super(ConverterFactory.getBooleanFormat(field));
 	}
 
 }

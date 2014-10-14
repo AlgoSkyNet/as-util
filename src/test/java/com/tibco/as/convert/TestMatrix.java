@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.tibco.as.space.FieldDef;
 import com.tibco.as.space.FieldDef.FieldType;
 
 @SuppressWarnings("rawtypes")
@@ -15,7 +14,10 @@ public class TestMatrix {
 
 	@Test
 	public void testMatrix() {
-		Attributes attributes = new Attributes();
+		TestSpace importSpace = new TestSpace();
+		importSpace.setDirection(Direction.IMPORT);
+		TestSpace exportSpace = new TestSpace();
+		importSpace.setDirection(Direction.EXPORT);
 		Class[] classes = { Double.class, Float.class, Integer.class,
 				Long.class, Short.class, String.class, Date.class,
 				Calendar.class, byte[].class };
@@ -25,15 +27,20 @@ public class TestMatrix {
 				FieldType.SHORT, FieldType.STRING };
 		for (Class clazz : classes) {
 			for (FieldType fieldType : fieldTypes) {
-				FieldDef fieldDef = FieldDef.create("Field", fieldType);
+				TestField importField = new TestField(importSpace);
+				importField.setFieldType(fieldType);
+				importField.setJavaType(clazz);
 				try {
-					factory.getConverter(attributes, clazz, fieldDef);
+					factory.getConverter(importField);
 				} catch (UnsupportedConversionException e) {
 					System.out
 							.println(e.getFromType() + " -> " + e.getToType());
 				}
+				TestField exportField = new TestField(exportSpace);
+				exportField.setFieldType(fieldType);
+				exportField.setJavaType(clazz);
 				try {
-					factory.getConverter(attributes, fieldDef, clazz);
+					factory.getConverter(exportField);
 				} catch (UnsupportedConversionException e) {
 					System.out
 							.println(e.getFromType() + " -> " + e.getToType());

@@ -1,13 +1,13 @@
 package com.tibco.as.convert.converters;
 
-import com.tibco.as.convert.Attributes;
 import com.tibco.as.convert.ConvertException;
 import com.tibco.as.convert.ConverterFactory;
+import com.tibco.as.convert.Field;
 
 public class StringToBytes extends AbstractParser {
 
-	public StringToBytes(Attributes attributes) {
-		super(ConverterFactory.getBlobFormat(attributes));
+	public StringToBytes(Field field) {
+		super(ConverterFactory.getBlobFormat(field));
 	}
 
 	@Override

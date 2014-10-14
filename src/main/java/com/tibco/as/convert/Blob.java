@@ -1,5 +1,5 @@
 package com.tibco.as.convert;
 
-public class ConverterInfo {
-
+public enum Blob {
+	BASE64, HEX
 }

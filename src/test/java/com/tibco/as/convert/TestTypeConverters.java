@@ -9,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.tibco.as.space.DateTime;
-import com.tibco.as.space.FieldDef;
 import com.tibco.as.space.FieldDef.FieldType;
 
 public class TestTypeConverters {
@@ -89,9 +88,11 @@ public class TestTypeConverters {
 		Calendar calendar = DatatypeConverter.parseDateTime(dateString);
 		// calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 		DateTime dateTime = DateTime.create(calendar);
-		FieldDef fieldDef = FieldDef.create("field1", FieldType.DATETIME);
-		IConverter converter = factory.getConverter(new Attributes(), fieldDef,
-				String.class);
+		TestField field = new TestField(new TestSpace());
+		field.setFieldName("field1");
+		field.setFieldType(FieldType.DATETIME);
+		field.setJavaType(String.class);
+		IConverter converter = factory.getConverter(field);
 		Assert.assertEquals(calendar.getTimeInMillis(), DatatypeConverter
 				.parseDateTime((String) converter.convert(dateTime))
 				.getTimeInMillis());
@@ -99,6 +100,7 @@ public class TestTypeConverters {
 
 	private IConverter getConverter(Class<?> from, Class<?> to)
 			throws UnsupportedConversionException {
-		return factory.getConverter(new Attributes(), from, to);
+		Field field = new Field(new Space());
+		return factory.getConverter(field, from, to);
 	}
 }

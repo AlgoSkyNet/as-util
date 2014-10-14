@@ -1,20 +1,18 @@
-package com.tibco.as.convert.map;
+package com.tibco.as.convert;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.tibco.as.accessors.ITupleAccessor;
-import com.tibco.as.convert.ConvertException;
-import com.tibco.as.convert.IConverter;
+import com.tibco.as.convert.accessors.ITupleAccessor;
 import com.tibco.as.space.Tuple;
 
-public class TupleToMapConverter implements IConverter {
+public class TupleMapConverter implements IConverter {
 
 	private Map<String, ITupleAccessor> accessors;
 	private Map<String, IConverter> converters;
 
-	public TupleToMapConverter(Map<String, ITupleAccessor> accessors,
+	public TupleMapConverter(Map<String, ITupleAccessor> accessors,
 			Map<String, IConverter> converters) {
 		this.accessors = accessors;
 		this.converters = converters;
