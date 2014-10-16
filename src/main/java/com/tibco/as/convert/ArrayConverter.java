@@ -5,12 +5,12 @@ import java.util.Collection;
 import com.tibco.as.convert.accessors.ITupleAccessor;
 import com.tibco.as.space.Tuple;
 
-public class ArrayTupleConverter implements IConverter {
+public class ArrayConverter implements IConverter {
 
 	private ITupleAccessor[] accessors;
 	private IConverter[] converters;
 
-	public ArrayTupleConverter(Collection<ITupleAccessor> accessors,
+	public ArrayConverter(Collection<ITupleAccessor> accessors,
 			Collection<IConverter> converters) {
 		this.accessors = accessors
 				.toArray(new ITupleAccessor[accessors.size()]);

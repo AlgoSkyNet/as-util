@@ -88,11 +88,12 @@ public class TestTypeConverters {
 		Calendar calendar = DatatypeConverter.parseDateTime(dateString);
 		// calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 		DateTime dateTime = DateTime.create(calendar);
-		TestField field = new TestField(new TestSpace());
+		Space space = new Space();
+		Field field = space.addField();
 		field.setFieldName("field1");
 		field.setFieldType(FieldType.DATETIME);
 		field.setJavaType(String.class);
-		IConverter converter = factory.getConverter(field);
+		IConverter converter = factory.getFieldConverter(field);
 		Assert.assertEquals(calendar.getTimeInMillis(), DatatypeConverter
 				.parseDateTime((String) converter.convert(dateTime))
 				.getTimeInMillis());
@@ -100,7 +101,6 @@ public class TestTypeConverters {
 
 	private IConverter getConverter(Class<?> from, Class<?> to)
 			throws UnsupportedConversionException {
-		Field field = new Field(new Space());
-		return factory.getConverter(field, from, to);
+		return factory.getConverter(new Space().addField(), from, to);
 	}
 }

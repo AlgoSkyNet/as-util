@@ -98,6 +98,7 @@ import com.tibco.as.convert.format.BytesFormat;
 import com.tibco.as.convert.format.HexFormat;
 import com.tibco.as.log.LogFactory;
 import com.tibco.as.space.DateTime;
+import com.tibco.as.space.FieldDef.FieldType;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class ConverterFactory {
@@ -198,10 +199,17 @@ public class ConverterFactory {
 				+ clazz.getName());
 	}
 
-	public IConverter getConverter(Field field)
+	public IConverter getJavaConverter(Field field)
 			throws UnsupportedConversionException {
-		Class<?> from = getFromType(field);
-		Class<?> to = getToType(field);
+		Class<?> from = field.getJavaType();
+		Class<?> to = getJavaType(field.getFieldType());
+		return getConverter(field, from, to);
+	}
+
+	public IConverter getFieldConverter(Field field)
+			throws UnsupportedConversionException {
+		Class<?> from = getJavaType(field.getFieldType());
+		Class<?> to = field.getJavaType();
 		return getConverter(field, from, to);
 	}
 
@@ -303,18 +311,29 @@ public class ConverterFactory {
 		return format;
 	}
 
-	private Class<?> getToType(Field field) {
-		if (field.isImport()) {
-			return Field.getJavaType(field.getFieldType());
+	private Class<?> getJavaType(FieldType fieldType) {
+		switch (fieldType) {
+		case BLOB:
+			return byte[].class;
+		case BOOLEAN:
+			return Boolean.class;
+		case CHAR:
+			return Character.class;
+		case DATETIME:
+			return DateTime.class;
+		case DOUBLE:
+			return Double.class;
+		case FLOAT:
+			return Float.class;
+		case INTEGER:
+			return Integer.class;
+		case LONG:
+			return Long.class;
+		case SHORT:
+			return Short.class;
+		default:
+			return String.class;
 		}
-		return field.getJavaType();
-	}
-
-	private Class<?> getFromType(Field field) {
-		if (field.isImport()) {
-			return field.getJavaType();
-		}
-		return Field.getJavaType(field.getFieldType());
 	}
 
 	private boolean matches(Class from, Class to, Class candidateFrom,
@@ -341,23 +360,24 @@ public class ConverterFactory {
 		return new DecimalFormat(pattern);
 	}
 
-	public Collection<IConverter> getConverters(Space space)
-			throws UnsupportedConversionException {
-		Collection<IConverter> converters = new ArrayList<IConverter>();
-		for (Field field : space.getFields()) {
-			converters.add(getConverter(field));
-		}
-		return converters;
-	}
-
-	public IConverter getArrayConverter(Space space)
+	public IConverter getJavaConverter(Space space)
 			throws UnsupportedConversionException {
 		Collection<ITupleAccessor> accessors = getAccessors(space);
-		Collection<IConverter> converters = getConverters(space);
-		if (space.isImport()) {
-			return new ArrayTupleConverter(accessors, converters);
+		Collection<IConverter> converters = new ArrayList<IConverter>();
+		for (Field field : space.getFields()) {
+			converters.add(getJavaConverter(field));
 		}
-		return new TupleArrayConverter(accessors, converters);
+		return new ArrayConverter(accessors, converters);
+	}
+
+	public IConverter getTupleConverter(Space space)
+			throws UnsupportedConversionException {
+		Collection<ITupleAccessor> accessors = getAccessors(space);
+		Collection<IConverter> converters = new ArrayList<IConverter>();
+		for (Field field : space.getFields()) {
+			converters.add(getFieldConverter(field));
+		}
+		return new TupleConverter(accessors, converters);
 	}
 
 	private ITupleAccessor getAccessor(Field field) {

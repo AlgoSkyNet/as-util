@@ -21,9 +21,13 @@ public class Field implements Cloneable {
 	private TimeZone timeZone;
 	private String decimalFormat;
 	private String integerFormat;
+	private Class<?> javaType;
 
-	public Field(Space space) {
-		this.space = space;
+	@Override
+	public Field clone() {
+		Field field = new Field();
+		copyTo(field);
+		return field;
 	}
 
 	public Blob getBlobFormat() {
@@ -93,58 +97,19 @@ public class Field implements Cloneable {
 	}
 
 	public Class<?> getJavaType() {
-		return getJavaType(getFieldType());
+		return javaType;
+	}
+
+	public void setJavaType(Class<?> javaType) {
+		this.javaType = javaType;
 	}
 
 	public FieldType getFieldType() {
-		if (fieldType == null) {
-			return getFieldType(getJavaType());
-		}
 		return fieldType;
 	}
 
 	public void setFieldType(FieldType fieldType) {
 		this.fieldType = fieldType;
-	}
-
-	public static FieldType getFieldType(Class<?> javaType) {
-		if (javaType == null) {
-			return null;
-		}
-		if (byte[].class.isAssignableFrom(javaType)) {
-			return FieldType.BLOB;
-		}
-		if (Boolean.class.isAssignableFrom(javaType)) {
-			return FieldType.BOOLEAN;
-		}
-		if (Character.class.isAssignableFrom(javaType)) {
-			return FieldType.CHAR;
-		}
-		if (DateTime.class.isAssignableFrom(javaType)) {
-			return FieldType.DATETIME;
-		}
-		if (Calendar.class.isAssignableFrom(javaType)) {
-			return FieldType.DATETIME;
-		}
-		if (Date.class.isAssignableFrom(javaType)) {
-			return FieldType.DATETIME;
-		}
-		if (Double.class.isAssignableFrom(javaType)) {
-			return FieldType.DOUBLE;
-		}
-		if (Float.class.isAssignableFrom(javaType)) {
-			return FieldType.FLOAT;
-		}
-		if (Integer.class.isAssignableFrom(javaType)) {
-			return FieldType.INTEGER;
-		}
-		if (Long.class.isAssignableFrom(javaType)) {
-			return FieldType.LONG;
-		}
-		if (Short.class.isAssignableFrom(javaType)) {
-			return FieldType.SHORT;
-		}
-		return FieldType.STRING;
 	}
 
 	public void setSpace(Space space) {
@@ -192,19 +157,6 @@ public class Field implements Cloneable {
 		return fieldDef;
 	}
 
-	public void setFieldDef(FieldDef fieldDef) {
-		setFieldName(fieldDef.getName());
-		setFieldType(fieldDef.getType());
-		setFieldNullable(fieldDef.isNullable());
-		setFieldEncrypted(fieldDef.isEncrypted());
-	}
-
-	public Field clone() {
-		Field clone = new Field(space);
-		copyTo(clone);
-		return clone;
-	}
-
 	public void copyTo(Field target) {
 		target.blobFormat = blobFormat;
 		target.booleanFormat = booleanFormat;
@@ -215,39 +167,47 @@ public class Field implements Cloneable {
 		target.fieldNullable = fieldNullable;
 		target.fieldType = fieldType;
 		target.integerFormat = integerFormat;
+		target.javaType = javaType;
+		target.space = space;
 		target.timeZone = timeZone;
 	}
 
-	public static Class<?> getJavaType(FieldType fieldType) {
-		if (fieldType == null) {
-			return null;
+	protected FieldType getJavaFieldType() {
+		Class<?> javaType = getJavaType();
+		if (byte[].class.isAssignableFrom(javaType)) {
+			return FieldType.BLOB;
 		}
-		switch (fieldType) {
-		case BLOB:
-			return byte[].class;
-		case BOOLEAN:
-			return Boolean.class;
-		case CHAR:
-			return Character.class;
-		case DATETIME:
-			return DateTime.class;
-		case DOUBLE:
-			return Double.class;
-		case FLOAT:
-			return Float.class;
-		case INTEGER:
-			return Integer.class;
-		case LONG:
-			return Long.class;
-		case SHORT:
-			return Short.class;
-		default:
-			return String.class;
+		if (Boolean.class.isAssignableFrom(javaType)) {
+			return FieldType.BOOLEAN;
 		}
-	}
-
-	public boolean isImport() {
-		return space.isImport();
+		if (Character.class.isAssignableFrom(javaType)) {
+			return FieldType.CHAR;
+		}
+		if (DateTime.class.isAssignableFrom(javaType)) {
+			return FieldType.DATETIME;
+		}
+		if (Calendar.class.isAssignableFrom(javaType)) {
+			return FieldType.DATETIME;
+		}
+		if (Date.class.isAssignableFrom(javaType)) {
+			return FieldType.DATETIME;
+		}
+		if (Double.class.isAssignableFrom(javaType)) {
+			return FieldType.DOUBLE;
+		}
+		if (Float.class.isAssignableFrom(javaType)) {
+			return FieldType.FLOAT;
+		}
+		if (Integer.class.isAssignableFrom(javaType)) {
+			return FieldType.INTEGER;
+		}
+		if (Long.class.isAssignableFrom(javaType)) {
+			return FieldType.LONG;
+		}
+		if (Short.class.isAssignableFrom(javaType)) {
+			return FieldType.SHORT;
+		}
+		return FieldType.STRING;
 	}
 
 }

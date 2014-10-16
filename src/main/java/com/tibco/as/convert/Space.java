@@ -2,6 +2,7 @@ package com.tibco.as.convert;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,7 +11,7 @@ import com.tibco.as.log.LogFactory;
 import com.tibco.as.space.FieldDef;
 import com.tibco.as.space.SpaceDef;
 
-public class Space implements Cloneable {
+public class Space {
 
 	private final static String DEFAULT_BOOLEAN_FORMAT = "true|false";
 	private final static TimeZone DEFAULT_TIMEZONE = TimeZone
@@ -20,13 +21,16 @@ public class Space implements Cloneable {
 	private String space;
 	private Collection<Field> fields = new ArrayList<Field>();
 	private Collection<String> keys = new ArrayList<String>();
-	private Direction direction;
 	private Blob blobFormat;
 	private String booleanFormat;
 	private String dateFormat;
 	private TimeZone timeZone;
 	private String decimalFormat;
 	private String integerFormat;
+
+	public void setFields(Collection<Field> fields) {
+		this.fields = fields;
+	}
 
 	public Blob getBlobFormat() {
 		return blobFormat;
@@ -82,32 +86,11 @@ public class Space implements Cloneable {
 		this.integerFormat = integerFormat;
 	}
 
-	public Direction getDirection() {
-		return direction;
-	}
-
-	public void setDirection(Direction direction) {
-		this.direction = direction;
-	}
-
-	public boolean isImport() {
-		return direction == Direction.IMPORT;
-	}
-
-	@Override
-	public Space clone() {
-		Space clone = new Space();
-		copyTo(clone);
-		return clone;
-	}
-
 	public void copyTo(Space target) {
 		target.blobFormat = blobFormat;
 		target.booleanFormat = booleanFormat;
 		target.dateFormat = dateFormat;
 		target.decimalFormat = decimalFormat;
-		target.direction = direction;
-		target.fields = new ArrayList<Field>();
 		for (Field field : fields) {
 			target.fields.add(field.clone());
 		}
@@ -118,11 +101,7 @@ public class Space implements Cloneable {
 	}
 
 	public Collection<Field> getFields() {
-		return fields;
-	}
-
-	public void setFields(Collection<Field> fields) {
-		this.fields = fields;
+		return Collections.unmodifiableCollection(fields);
 	}
 
 	protected Field getField(String name) {
@@ -150,32 +129,38 @@ public class Space implements Cloneable {
 		this.space = space;
 	}
 
-	public Field createField() {
-		return new Field(this);
-	}
-
 	public void setSpaceDef(SpaceDef spaceDef) {
 		setSpace(spaceDef.getName());
 		setKeys(spaceDef.getKeyDef().getFieldNames());
 		if (fields.isEmpty()) {
 			for (FieldDef fieldDef : spaceDef.getFieldDefs()) {
-				Field field = createField();
-				field.setFieldDef(fieldDef);
-				fields.add(field);
+				addField().setFieldName(fieldDef.getName());
 			}
 		}
 		for (Field field : fields) {
-			String fieldName = field.getFieldName();
-			FieldDef fieldDef = spaceDef.getFieldDef(fieldName);
+			FieldDef fieldDef = spaceDef.getFieldDef(field.getFieldName());
 			if (fieldDef == null) {
 				log.log(Level.WARNING,
 						"No field named ''{0}'' in space ''{1}''",
-						new Object[] { fieldName, spaceDef.getName() });
+						new Object[] { field.getFieldName(), spaceDef.getName() });
 			} else {
-				field.setFieldDef(fieldDef);
+				field.setFieldType(fieldDef.getType());
+				field.setFieldNullable(fieldDef.isNullable());
+				field.setFieldEncrypted(fieldDef.isEncrypted());
 			}
 		}
 		setKeys(spaceDef.getKeyDef().getFieldNames());
+	}
+
+	public Field addField() {
+		Field field = newField();
+		field.setSpace(this);
+		fields.add(field);
+		return field;
+	}
+
+	protected Field newField() {
+		return new Field();
 	}
 
 	public SpaceDef getSpaceDef() {
