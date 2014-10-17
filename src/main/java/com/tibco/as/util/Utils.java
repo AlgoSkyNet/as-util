@@ -9,6 +9,7 @@ import com.tibco.as.space.ASCommon;
 import com.tibco.as.space.ASException;
 import com.tibco.as.space.FieldDef;
 import com.tibco.as.space.Member.DistributionRole;
+import com.tibco.as.space.MemberDef;
 import com.tibco.as.space.Metaspace;
 import com.tibco.as.space.Space;
 import com.tibco.as.space.SpaceDef;
@@ -82,6 +83,10 @@ public class Utils {
 		return false;
 	}
 
+	public static boolean hasMemberDefMethod(String name) {
+		return hasMethod(MemberDef.class, name);
+	}
+
 	public static boolean hasSpaceDefMethod(String name) {
 		return hasMethod(SpaceDef.class, name);
 	}
@@ -96,6 +101,78 @@ public class Utils {
 
 	public static Metaspace getMetaspace(String name) {
 		return ASCommon.getMetaspace(getMetaspaceName(name));
+	}
+
+	public static Metaspace connect(String metaspaceName, Member member)
+			throws ASException {
+		return Metaspace.connect(metaspaceName, getMemberDef(member));
+	}
+
+	private static MemberDef getMemberDef(Member member) {
+		MemberDef memberDef = MemberDef.create();
+		if (member == null) {
+			return memberDef;
+		}
+		if (member.getClusterSuspendThreshold() != null) {
+			if (Utils.hasMemberDefMethod("setClusterSuspendThreshold")) {
+				memberDef.setClusterSuspendThreshold(member
+						.getClusterSuspendThreshold());
+			}
+		}
+		if (member.getConnectTimeout() != null) {
+			if (Utils.hasMemberDefMethod("setConnectTimeout")) {
+				memberDef.setConnectTimeout(member.getConnectTimeout());
+			}
+		}
+		if (member.getDataStore() != null) {
+			memberDef.setDataStore(member.getDataStore());
+		}
+		if (member.getDiscovery() != null) {
+			memberDef.setDiscovery(member.getDiscovery());
+		}
+		if (member.getIdentityPassword() != null) {
+			if (Utils.hasMemberDefMethod("setIdentityPassword")) {
+				memberDef.setIdentityPassword(member.getIdentityPassword()
+						.toCharArray());
+			}
+		}
+		if (member.getListen() != null) {
+			memberDef.setListen(member.getListen());
+		}
+		if (member.getMemberName() != null) {
+			memberDef.setMemberName(member.getMemberName());
+		}
+		if (member.getMemberTimeout() != null) {
+			if (Utils.hasMemberDefMethod("setMemberTimeout")) {
+				memberDef.setMemberTimeout(member.getMemberTimeout());
+			}
+		}
+		if (member.getRemoteDiscovery() != null) {
+			memberDef.setRemoteDiscovery(member.getRemoteDiscovery());
+		}
+		if (member.getRemoteListen() != null) {
+			memberDef.setRemoteListen(member.getRemoteListen());
+		}
+		if (member.getRxBufferSize() != null) {
+			memberDef.setRxBufferSize(member.getRxBufferSize());
+		}
+		if (member.getSecurityPolicyFile() != null) {
+			if (Utils.hasMemberDefMethod("setSecurityPolicyFile")) {
+				memberDef.setSecurityPolicyFile(member.getSecurityPolicyFile());
+			}
+		}
+		if (member.getSecurityTokenFile() != null) {
+			if (Utils.hasMemberDefMethod("setSecurityTokenFile")) {
+				memberDef.setSecurityTokenFile(member.getSecurityTokenFile());
+			}
+		}
+		if (member.getTransportThreadCount() != null) {
+			memberDef.setTransportThreadCount(member.getTransportThreadCount());
+		}
+		if (member.getWorkerThreadCount() != null) {
+			memberDef.setWorkerThreadCount(member.getWorkerThreadCount());
+		}
+		return memberDef;
 	}
 
 	public static String getSpaceURI(String metaspaceName, String spaceName) {
