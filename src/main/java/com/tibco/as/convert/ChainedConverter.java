@@ -11,7 +11,7 @@ public class ChainedConverter implements IConverter {
 	}
 
 	@Override
-	public Object convert(Object value) throws ConvertException {
+	public Object convert(Object value) throws Exception {
 		if (value == null) {
 			return null;
 		}

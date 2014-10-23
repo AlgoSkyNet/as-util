@@ -1,17 +1,12 @@
 package com.tibco.as.convert.converters;
 
-import com.tibco.as.convert.Field;
-import com.tibco.as.convert.format.DoubleFormat;
+import com.tibco.as.convert.IConverter;
 
-public class StringToDouble extends AbstractNumberParser {
-
-	public StringToDouble(Field field) {
-		super(field.getDecimalFormat(), new DoubleFormat());
-	}
+public class StringToDouble implements IConverter {
 
 	@Override
-	protected Double convert(Number number) {
-		return number.doubleValue();
+	public Double convert(Object source) {
+		return Double.valueOf((String) source);
 	}
 
 }

@@ -1,13 +1,9 @@
 package com.tibco.as.convert;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.Format;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,19 +25,21 @@ import com.tibco.as.convert.accessors.IntegerAccessor;
 import com.tibco.as.convert.accessors.LongAccessor;
 import com.tibco.as.convert.accessors.ShortAccessor;
 import com.tibco.as.convert.accessors.StringAccessor;
+import com.tibco.as.convert.converters.Base64ToBytes;
 import com.tibco.as.convert.converters.BigIntegerToBytes;
 import com.tibco.as.convert.converters.BooleanToBytes;
 import com.tibco.as.convert.converters.BooleanToNumber;
 import com.tibco.as.convert.converters.BooleanToString;
+import com.tibco.as.convert.converters.BytesToBase64;
 import com.tibco.as.convert.converters.BytesToBigInteger;
 import com.tibco.as.convert.converters.BytesToBoolean;
 import com.tibco.as.convert.converters.BytesToCharacter;
 import com.tibco.as.convert.converters.BytesToDouble;
 import com.tibco.as.convert.converters.BytesToFloat;
+import com.tibco.as.convert.converters.BytesToHex;
 import com.tibco.as.convert.converters.BytesToInteger;
 import com.tibco.as.convert.converters.BytesToLong;
 import com.tibco.as.convert.converters.BytesToShort;
-import com.tibco.as.convert.converters.BytesToString;
 import com.tibco.as.convert.converters.CalendarToDate;
 import com.tibco.as.convert.converters.CalendarToDateTime;
 import com.tibco.as.convert.converters.CharacterToBytes;
@@ -58,30 +56,30 @@ import com.tibco.as.convert.converters.DateToLong;
 import com.tibco.as.convert.converters.DateToString;
 import com.tibco.as.convert.converters.DoubleToBigDecimal;
 import com.tibco.as.convert.converters.DoubleToBytes;
-import com.tibco.as.convert.converters.DoubleToString;
 import com.tibco.as.convert.converters.FloatToBytes;
-import com.tibco.as.convert.converters.FloatToString;
+import com.tibco.as.convert.converters.HexToBytes;
 import com.tibco.as.convert.converters.ISO8601ToString;
 import com.tibco.as.convert.converters.Idem;
 import com.tibco.as.convert.converters.IntegerToBytes;
-import com.tibco.as.convert.converters.IntegerToString;
 import com.tibco.as.convert.converters.LongToBigDecimal;
 import com.tibco.as.convert.converters.LongToBigInteger;
 import com.tibco.as.convert.converters.LongToBytes;
 import com.tibco.as.convert.converters.LongToDate;
-import com.tibco.as.convert.converters.LongToString;
+import com.tibco.as.convert.converters.NumberFormatter;
+import com.tibco.as.convert.converters.NumberParser;
 import com.tibco.as.convert.converters.NumberToBoolean;
+import com.tibco.as.convert.converters.NumberToByte;
 import com.tibco.as.convert.converters.NumberToCharacter;
 import com.tibco.as.convert.converters.NumberToDouble;
 import com.tibco.as.convert.converters.NumberToFloat;
 import com.tibco.as.convert.converters.NumberToInteger;
 import com.tibco.as.convert.converters.NumberToLong;
 import com.tibco.as.convert.converters.NumberToShort;
+import com.tibco.as.convert.converters.NumberToString;
 import com.tibco.as.convert.converters.ShortToBytes;
-import com.tibco.as.convert.converters.ShortToString;
 import com.tibco.as.convert.converters.StringToBigDecimal;
 import com.tibco.as.convert.converters.StringToBoolean;
-import com.tibco.as.convert.converters.StringToBytes;
+import com.tibco.as.convert.converters.StringToByte;
 import com.tibco.as.convert.converters.StringToCharacter;
 import com.tibco.as.convert.converters.StringToDate;
 import com.tibco.as.convert.converters.StringToDouble;
@@ -92,10 +90,6 @@ import com.tibco.as.convert.converters.StringToLong;
 import com.tibco.as.convert.converters.StringToShort;
 import com.tibco.as.convert.converters.StringToURL;
 import com.tibco.as.convert.converters.URLToString;
-import com.tibco.as.convert.format.Base64Format;
-import com.tibco.as.convert.format.BooleanFormat;
-import com.tibco.as.convert.format.BytesFormat;
-import com.tibco.as.convert.format.HexFormat;
 import com.tibco.as.log.LogFactory;
 import com.tibco.as.space.DateTime;
 import com.tibco.as.space.FieldDef.FieldType;
@@ -110,7 +104,6 @@ public class ConverterFactory {
 		register(BigInteger.class, byte[].class, BigIntegerToBytes.class);
 		register(Boolean.class, byte[].class, BooleanToBytes.class);
 		register(Boolean.class, Number.class, BooleanToNumber.class);
-		register(Boolean.class, String.class, BooleanToString.class);
 		register(byte[].class, BigInteger.class, BytesToBigInteger.class);
 		register(byte[].class, Boolean.class, BytesToBoolean.class);
 		register(byte[].class, Character.class, BytesToCharacter.class);
@@ -119,7 +112,6 @@ public class ConverterFactory {
 		register(byte[].class, Integer.class, BytesToInteger.class);
 		register(byte[].class, Long.class, BytesToLong.class);
 		register(byte[].class, Short.class, BytesToShort.class);
-		register(byte[].class, String.class, BytesToString.class);
 		register(Calendar.class, Date.class, CalendarToDate.class);
 		register(Calendar.class, DateTime.class, CalendarToDateTime.class);
 		register(Character.class, byte[].class, CharacterToBytes.class);
@@ -136,15 +128,11 @@ public class ConverterFactory {
 		register(DateTime.class, Date.class, DateTimeToDate.class);
 		register(Double.class, BigDecimal.class, DoubleToBigDecimal.class);
 		register(Double.class, byte[].class, DoubleToBytes.class);
-		register(Double.class, String.class, DoubleToString.class);
 		register(Float.class, byte[].class, FloatToBytes.class);
-		register(Float.class, String.class, FloatToString.class);
 		register(Integer.class, byte[].class, IntegerToBytes.class);
-		register(Integer.class, String.class, IntegerToString.class);
 		register(Long.class, BigInteger.class, LongToBigInteger.class);
 		register(Long.class, byte[].class, LongToBytes.class);
 		register(Long.class, Date.class, LongToDate.class);
-		register(Long.class, String.class, LongToString.class);
 		register(Long.class, BigDecimal.class, LongToBigDecimal.class);
 		register(Number.class, Boolean.class, NumberToBoolean.class);
 		register(Number.class, Character.class, NumberToCharacter.class);
@@ -154,16 +142,8 @@ public class ConverterFactory {
 		register(Number.class, Long.class, NumberToLong.class);
 		register(Number.class, Short.class, NumberToShort.class);
 		register(Short.class, byte[].class, ShortToBytes.class);
-		register(Short.class, String.class, ShortToString.class);
 		register(String.class, BigDecimal.class, StringToBigDecimal.class);
-		register(String.class, Boolean.class, StringToBoolean.class);
-		register(String.class, byte[].class, StringToBytes.class);
 		register(String.class, Character.class, StringToCharacter.class);
-		register(String.class, Double.class, StringToDouble.class);
-		register(String.class, Float.class, StringToFloat.class);
-		register(String.class, Integer.class, StringToInteger.class);
-		register(String.class, Long.class, StringToLong.class);
-		register(String.class, Short.class, StringToShort.class);
 		register(String.class, URL.class, StringToURL.class);
 		register(URL.class, String.class, URLToString.class);
 	}
@@ -184,37 +164,22 @@ public class ConverterFactory {
 
 	}
 
-	private IConverter newConverterInstance(Class clazz, Field field)
-			throws InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
-		Constructor[] constructors = clazz.getConstructors();
-		for (Constructor constructor : constructors) {
-			Class[] parameterTypes = constructor.getParameterTypes();
-			if (parameterTypes.length == 0) {
-				return (IConverter) constructor.newInstance();
-			}
-			return (IConverter) constructor.newInstance(field);
-		}
-		throw new InstantiationException("Could not instanciate type "
-				+ clazz.getName());
-	}
-
 	public IConverter getJavaConverter(Field field)
 			throws UnsupportedConversionException {
 		Class<?> from = field.getJavaType();
 		Class<?> to = getJavaType(field.getFieldType());
-		return getConverter(field, from, to);
+		return getConverter(field.getConversion(), from, to);
 	}
 
 	public IConverter getFieldConverter(Field field)
 			throws UnsupportedConversionException {
 		Class<?> from = getJavaType(field.getFieldType());
 		Class<?> to = field.getJavaType();
-		return getConverter(field, from, to);
+		return getConverter(field.getConversion(), from, to);
 	}
 
-	public IConverter getConverter(Field field, Class<?> from, Class<?> to)
-			throws UnsupportedConversionException {
+	public IConverter getConverter(ConversionConfig conversion, Class<?> from,
+			Class<?> to) throws UnsupportedConversionException {
 		if (from.isAssignableFrom(to)) {
 			return new Idem();
 		}
@@ -223,95 +188,178 @@ public class ConverterFactory {
 					.get(fromCandidate);
 			for (Class toCandidate : candidates.keySet()) {
 				if (matches(from, to, fromCandidate, toCandidate)) {
+					Class<?> clazz = candidates.get(toCandidate);
 					try {
-						return newConverterInstance(
-								candidates.get(toCandidate), field);
+						return (IConverter) clazz.getConstructors()[0]
+								.newInstance();
 					} catch (Exception e) {
 						throw new UnsupportedConversionException(from, to, e);
 					}
 				}
 			}
 		}
+		if (Boolean.class.isAssignableFrom(from)) {
+			if (String.class.isAssignableFrom(to)) {
+				return new BooleanToString(conversion.getBooleanTruePattern(),
+						conversion.getBooleanFalsePattern());
+			}
+		}
 		if (Date.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				if (field.getDateFormat() == null) {
-					return new ChainedConverter(new DateToCalendar(),
-							new ISO8601ToString());
+				if (conversion.getDatePattern() == null) {
+					return getConverter(conversion, from, Calendar.class, to);
 				}
-				return new DateToString(getDateFormat(field));
+				return new DateToString(getDateFormat(conversion));
 			}
 		}
 		if (Calendar.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				if (field.getDateFormat() == null) {
+				if (conversion.getDatePattern() == null) {
 					return new ISO8601ToString();
 				}
-				return new ChainedConverter(new CalendarToDate(),
-						new DateToString(getDateFormat(field)));
+				return getConverter(conversion, from, Date.class, to);
 			}
 		}
-		if (Date.class.isAssignableFrom(to)) {
-			if (String.class.isAssignableFrom(from)) {
-				if (field.getDateFormat() == null) {
-					return new ChainedConverter(new StringToISO8601(),
-							new CalendarToDate());
+		if (String.class.isAssignableFrom(from)) {
+			if (Boolean.class.isAssignableFrom(to)) {
+				return new StringToBoolean(conversion.getBooleanTruePattern());
+			}
+			if (Byte.class.isAssignableFrom(to)) {
+				String pattern = conversion.getNumberPattern();
+				if (pattern == null) {
+					return new StringToByte();
 				}
-				return new StringToDate(getDateFormat(field));
+				return getNumberConverter(pattern, new NumberToByte());
 			}
-		}
-		if (Calendar.class.isAssignableFrom(to)) {
-			if (String.class.isAssignableFrom(from)) {
-				if (field.getDateFormat() == null) {
+			if (Double.class.isAssignableFrom(to)) {
+				String pattern = conversion.getNumberPattern();
+				if (pattern == null) {
+					return new StringToDouble();
+				}
+				return getNumberConverter(pattern, new NumberToDouble());
+			}
+			if (Float.class.isAssignableFrom(to)) {
+				String pattern = conversion.getNumberPattern();
+				if (pattern == null) {
+					return new StringToFloat();
+				}
+				return getNumberConverter(pattern, new NumberToFloat());
+			}
+			if (Integer.class.isAssignableFrom(to)) {
+				String pattern = conversion.getNumberPattern();
+				if (pattern == null) {
+					return new StringToInteger();
+				}
+				return getNumberConverter(pattern, new NumberToInteger());
+			}
+			if (Long.class.isAssignableFrom(to)) {
+				String pattern = conversion.getNumberPattern();
+				if (pattern == null) {
+					return new StringToLong();
+				}
+				return getNumberConverter(pattern, new NumberToLong());
+			}
+			if (Short.class.isAssignableFrom(to)) {
+				String pattern = conversion.getNumberPattern();
+				if (pattern == null) {
+					return new StringToShort();
+				}
+				return getNumberConverter(pattern, new NumberToShort());
+			}
+			if (Date.class.isAssignableFrom(to)) {
+				if (conversion.getDatePattern() == null) {
+					return getConverter(conversion, from, Calendar.class, to);
+				}
+				return new StringToDate(getDateFormat(conversion));
+			}
+			if (Calendar.class.isAssignableFrom(to)) {
+				if (conversion.getDatePattern() == null) {
 					return new StringToISO8601();
 				}
-				return new ChainedConverter(new StringToDate(
-						getDateFormat(field)), new DateToCalendar());
+				return getConverter(conversion, from, Date.class, to);
+			}
+			if (DateTime.class.isAssignableFrom(to)) {
+				return getConverter(conversion, from, Calendar.class, to);
+			}
+			if (byte[].class.isAssignableFrom(to)) {
+				switch (conversion.getBlob()) {
+				case BASE64:
+					return new Base64ToBytes();
+				default:
+					return new HexToBytes();
+				}
 			}
 		}
 		if (DateTime.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				return new ChainedConverter(new DateTimeToCalendar(),
-						getConverter(field, Calendar.class, String.class));
+				return getConverter(conversion, from, Calendar.class, to);
+			}
+			if (Long.class.isAssignableFrom(to)) {
+				return getConverter(conversion, from, Date.class, to);
 			}
 			if (Number.class.isAssignableFrom(to)) {
-				return new ChainedConverter(new ChainedConverter(
-						new DateTimeToDate(), new DateToLong()), getConverter(
-						field, Long.class, to));
+				return getConverter(conversion, from, Long.class, to);
 			}
 		}
-		if (DateTime.class.isAssignableFrom(to)) {
-			if (String.class.isAssignableFrom(from)) {
-				return new ChainedConverter(getConverter(field, String.class,
-						Calendar.class), new CalendarToDateTime());
-			}
-			if (Number.class.isAssignableFrom(from)) {
-				return new ChainedConverter(new NumberToLong(),
-						new ChainedConverter(new LongToDate(),
-								new DateToDateTime()));
+		if (Long.class.isAssignableFrom(from)) {
+			if (DateTime.class.isAssignableFrom(to)) {
+				return getConverter(conversion, from, Date.class, to);
 			}
 		}
-		if (BigDecimal.class.isAssignableFrom(to)) {
-			if (Number.class.isAssignableFrom(from)) {
-				return new ChainedConverter(new NumberToLong(),
-						new LongToBigDecimal());
+		if (Number.class.isAssignableFrom(from)) {
+			if (DateTime.class.isAssignableFrom(to)) {
+				return getConverter(conversion, from, Long.class, to);
+			}
+			if (BigDecimal.class.isAssignableFrom(to)) {
+				return getConverter(conversion, from, Long.class, to);
+			}
+			if (BigInteger.class.isAssignableFrom(to)) {
+				return getConverter(conversion, from, Long.class, to);
+			}
+			if (String.class.isAssignableFrom(to)) {
+				String pattern = conversion.getNumberPattern();
+				if (pattern == null) {
+					return new NumberToString();
+				}
+				return new NumberFormatter(pattern);
 			}
 		}
-		if (BigInteger.class.isAssignableFrom(to)) {
-			if (Number.class.isAssignableFrom(from)) {
-				return new ChainedConverter(new NumberToLong(),
-						new LongToBigInteger());
+		if (byte[].class.isAssignableFrom(from)) {
+			if (String.class.isAssignableFrom(to)) {
+				switch (conversion.getBlob()) {
+				case BASE64:
+					return new BytesToBase64();
+				default:
+					return new BytesToHex();
+				}
 			}
 		}
 		throw new UnsupportedConversionException(from, to);
 	}
 
-	private DateFormat getDateFormat(Field field) {
-		DateFormat format = new SimpleDateFormat(field.getDateFormat());
-		format.setTimeZone(field.getTimeZone());
+	private DateFormat getDateFormat(ConversionConfig conversion) {
+		String pattern = conversion.getDatePattern();
+		SimpleDateFormat format = new SimpleDateFormat(pattern);
+		format.setTimeZone(conversion.getTimeZone());
 		return format;
 	}
 
+	private IConverter getNumberConverter(String pattern, IConverter converter2) {
+		NumberParser converter1 = new NumberParser(pattern);
+		return new ChainedConverter(converter1, converter2);
+	}
+
+	private IConverter getConverter(ConversionConfig conversion, Class<?> from,
+			Class<?> pivot, Class<?> to) throws UnsupportedConversionException {
+		IConverter converter1 = getConverter(conversion, from, pivot);
+		IConverter converter2 = getConverter(conversion, pivot, to);
+		return new ChainedConverter(converter1, converter2);
+	}
+
 	private Class<?> getJavaType(FieldType fieldType) {
+		if (fieldType == null) {
+			return String.class;
+		}
 		switch (fieldType) {
 		case BLOB:
 			return byte[].class;
@@ -342,76 +390,69 @@ public class ConverterFactory {
 				&& candidateTo.isAssignableFrom(to);
 	}
 
-	public static BytesFormat getBlobFormat(Field field) {
-		if (field.getBlobFormat() == Blob.BASE64) {
-			return new Base64Format();
-		}
-		return new HexFormat();
-	}
-
-	public static BooleanFormat getBooleanFormat(Field field) {
-		return new BooleanFormat(field.getBooleanFormat());
-	}
-
-	public static Format getNumberFormat(String pattern, Format defaultFormat) {
-		if (pattern == null) {
-			return defaultFormat;
-		}
-		return new DecimalFormat(pattern);
-	}
-
-	public IConverter getJavaConverter(Space space)
+	public IConverter getJavaConverter(Collection<Field> fields)
 			throws UnsupportedConversionException {
-		Collection<ITupleAccessor> accessors = getAccessors(space);
-		Collection<IConverter> converters = new ArrayList<IConverter>();
-		for (Field field : space.getFields()) {
-			converters.add(getJavaConverter(field));
-		}
+		Collection<ITupleAccessor> accessors = getAccessors(fields);
+		Collection<IConverter> converters = getJavaConverters(fields);
 		return new ArrayConverter(accessors, converters);
 	}
 
-	public IConverter getTupleConverter(Space space)
+	private Collection<IConverter> getJavaConverters(Collection<Field> fields)
 			throws UnsupportedConversionException {
-		Collection<ITupleAccessor> accessors = getAccessors(space);
 		Collection<IConverter> converters = new ArrayList<IConverter>();
-		for (Field field : space.getFields()) {
+		for (Field field : fields) {
+			converters.add(getJavaConverter(field));
+		}
+		return converters;
+	}
+
+	public IConverter getTupleConverter(Collection<Field> fields,
+			Class<?> componentType) throws UnsupportedConversionException {
+		Collection<ITupleAccessor> accessors = getAccessors(fields);
+		Collection<IConverter> converters = getFieldConverters(fields);
+		return new TupleConverter(accessors, converters, componentType);
+	}
+
+	private Collection<IConverter> getFieldConverters(Collection<Field> fields)
+			throws UnsupportedConversionException {
+		Collection<IConverter> converters = new ArrayList<IConverter>();
+		for (Field field : fields) {
 			converters.add(getFieldConverter(field));
 		}
-		return new TupleConverter(accessors, converters);
+		return converters;
 	}
 
 	private ITupleAccessor getAccessor(Field field) {
-		String fieldName = field.getFieldName();
+		if (field.getFieldType() == null) {
+			return null;
+		}
 		switch (field.getFieldType()) {
 		case BLOB:
-			return new BlobAccessor(fieldName);
+			return new BlobAccessor(field.getFieldName());
 		case BOOLEAN:
-			return new BooleanAccessor(fieldName);
+			return new BooleanAccessor(field.getFieldName());
 		case CHAR:
-			return new CharacterAccessor(fieldName);
+			return new CharacterAccessor(field.getFieldName());
 		case DATETIME:
-			return new DateTimeAccessor(fieldName);
+			return new DateTimeAccessor(field.getFieldName());
 		case DOUBLE:
-			return new DoubleAccessor(fieldName);
+			return new DoubleAccessor(field.getFieldName());
 		case FLOAT:
-			return new FloatAccessor(fieldName);
+			return new FloatAccessor(field.getFieldName());
 		case INTEGER:
-			return new IntegerAccessor(fieldName);
+			return new IntegerAccessor(field.getFieldName());
 		case LONG:
-			return new LongAccessor(fieldName);
+			return new LongAccessor(field.getFieldName());
 		case SHORT:
-			return new ShortAccessor(fieldName);
+			return new ShortAccessor(field.getFieldName());
 		default:
-			return new StringAccessor(fieldName);
+			return new StringAccessor(field.getFieldName());
 		}
 	}
 
-	private Collection<ITupleAccessor> getAccessors(Space space) {
+	private Collection<ITupleAccessor> getAccessors(Collection<Field> fields) {
 		Collection<ITupleAccessor> accessors = new ArrayList<ITupleAccessor>();
-		for (Field field : space.getFields()) {
-			if (field == null) {
-				continue;
-			}
+		for (Field field : fields) {
 			accessors.add(getAccessor(field));
 		}
 		return accessors;

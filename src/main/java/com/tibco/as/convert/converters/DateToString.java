@@ -1,11 +1,21 @@
 package com.tibco.as.convert.converters;
 
 import java.text.DateFormat;
+import java.util.Date;
 
-public class DateToString extends AbstractFormatter {
+import com.tibco.as.convert.IConverter;
+
+public class DateToString implements IConverter {
+
+	private DateFormat format;
 
 	public DateToString(DateFormat format) {
-		super(format);
+		this.format = format;
+	}
+
+	@Override
+	public String convert(Object source) {
+		return format.format((Date) source);
 	}
 
 }

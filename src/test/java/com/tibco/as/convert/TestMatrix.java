@@ -14,7 +14,6 @@ public class TestMatrix {
 
 	@Test
 	public void testMatrix() {
-		Space space = new Space();
 		Class[] classes = { Double.class, Float.class, Integer.class,
 				Long.class, Short.class, String.class, Date.class,
 				Calendar.class, byte[].class };
@@ -24,7 +23,7 @@ public class TestMatrix {
 				FieldType.SHORT, FieldType.STRING };
 		for (Class clazz : classes) {
 			for (FieldType fieldType : fieldTypes) {
-				Field field = space.addField();
+				Field field = new Field();
 				field.setFieldType(fieldType);
 				field.setJavaType(clazz);
 				try {

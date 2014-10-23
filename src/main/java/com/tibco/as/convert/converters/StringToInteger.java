@@ -1,17 +1,12 @@
 package com.tibco.as.convert.converters;
 
-import com.tibco.as.convert.Field;
-import com.tibco.as.convert.format.IntegerFormat;
+import com.tibco.as.convert.IConverter;
 
-public class StringToInteger extends AbstractNumberParser {
-
-	public StringToInteger(Field field) {
-		super(field.getIntegerFormat(), new IntegerFormat());
-	}
+public class StringToInteger implements IConverter {
 
 	@Override
-	protected Integer convert(Number number) {
-		return number.intValue();
+	public Integer convert(Object source) {
+		return Integer.valueOf((String) source);
 	}
 
 }

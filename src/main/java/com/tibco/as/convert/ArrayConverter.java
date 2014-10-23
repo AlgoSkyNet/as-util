@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.tibco.as.convert.accessors.ITupleAccessor;
 import com.tibco.as.space.Tuple;
 
-public class ArrayConverter implements IConverter {
+public class ArrayConverter<T> implements IConverter {
 
 	private ITupleAccessor[] accessors;
 	private IConverter[] converters;
@@ -18,14 +18,15 @@ public class ArrayConverter implements IConverter {
 	}
 
 	@Override
-	public Tuple convert(Object object) throws ConvertException {
-		Object[] array = (Object[]) object;
+	public Tuple convert(Object object) throws Exception {
+		@SuppressWarnings("unchecked")
+		T[] array = (T[]) object;
 		if (array == null) {
 			return null;
 		}
 		Tuple tuple = Tuple.create();
 		for (int index = 0; index < array.length; index++) {
-			Object value = array[index];
+			T value = array[index];
 			if (value == null) {
 				continue;
 			}
@@ -37,7 +38,11 @@ public class ArrayConverter implements IConverter {
 			if (accessor == null) {
 				continue;
 			}
-			accessor.set(tuple, converter.convert(value));
+			Object converted = converter.convert(value);
+			if (converted == null) {
+				continue;
+			}
+			accessor.set(tuple, converted);
 		}
 		return tuple;
 	}

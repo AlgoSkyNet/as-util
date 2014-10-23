@@ -22,16 +22,6 @@ public class TestTypeConverters {
 	}
 
 	@Test
-	public void testStringLongNoTrimConverter() throws Exception {
-		IConverter converter = getConverter(String.class, Long.class);
-		try {
-			converter.convert(" 123123 ");
-			Assert.fail("Should have rejected the whitespace");
-		} catch (ConvertException e) {
-		}
-	}
-
-	@Test
 	public void testLongStringConverter() throws Exception {
 		IConverter converter = getConverter(Long.class, String.class);
 		Assert.assertEquals("123123", converter.convert(123123L));
@@ -88,8 +78,7 @@ public class TestTypeConverters {
 		Calendar calendar = DatatypeConverter.parseDateTime(dateString);
 		// calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 		DateTime dateTime = DateTime.create(calendar);
-		Space space = new Space();
-		Field field = space.addField();
+		Field field = new Field();
 		field.setFieldName("field1");
 		field.setFieldType(FieldType.DATETIME);
 		field.setJavaType(String.class);
@@ -101,6 +90,6 @@ public class TestTypeConverters {
 
 	private IConverter getConverter(Class<?> from, Class<?> to)
 			throws UnsupportedConversionException {
-		return factory.getConverter(new Space().addField(), from, to);
+		return factory.getConverter(new ConversionConfig(), from, to);
 	}
 }

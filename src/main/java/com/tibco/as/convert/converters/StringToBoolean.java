@@ -1,18 +1,18 @@
 package com.tibco.as.convert.converters;
 
-import com.tibco.as.convert.ConvertException;
-import com.tibco.as.convert.ConverterFactory;
-import com.tibco.as.convert.Field;
+import com.tibco.as.convert.IConverter;
 
-public class StringToBoolean extends AbstractParser {
+public class StringToBoolean implements IConverter {
 
-	public StringToBoolean(Field field) {
-		super(ConverterFactory.getBooleanFormat(field));
+	private String truePattern;
+
+	public StringToBoolean(String truePattern) {
+		this.truePattern = truePattern;
 	}
 
 	@Override
-	protected Boolean parse(String string) throws ConvertException {
-		return (Boolean) parseObject(string);
+	public Boolean convert(Object source) {
+		return truePattern.equalsIgnoreCase((String) source);
 	}
 
 }

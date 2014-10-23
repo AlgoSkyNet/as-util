@@ -1,16 +1,12 @@
 package com.tibco.as.convert.converters;
 
-import com.tibco.as.convert.Field;
-import com.tibco.as.convert.format.LongFormat;
+import com.tibco.as.convert.IConverter;
 
-public class StringToLong extends AbstractNumberParser {
-
-	public StringToLong(Field field) {
-		super(field.getIntegerFormat(), new LongFormat());
-	}
+public class StringToLong implements IConverter {
 
 	@Override
-	protected Long convert(Number number) {
-		return number.longValue();
+	public Long convert(Object source) {
+		return Long.valueOf((String) source);
 	}
+
 }

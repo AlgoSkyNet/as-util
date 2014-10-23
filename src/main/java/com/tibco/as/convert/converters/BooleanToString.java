@@ -1,12 +1,23 @@
 package com.tibco.as.convert.converters;
 
-import com.tibco.as.convert.ConverterFactory;
-import com.tibco.as.convert.Field;
+import com.tibco.as.convert.IConverter;
 
-public class BooleanToString extends AbstractFormatter {
+public class BooleanToString implements IConverter {
 
-	public BooleanToString(Field field) {
-		super(ConverterFactory.getBooleanFormat(field));
+	private String truePattern;
+	private String falsePattern;
+
+	public BooleanToString(String truePattern, String falsePattern) {
+		this.truePattern = truePattern;
+		this.falsePattern = falsePattern;
+	}
+
+	@Override
+	public String convert(Object source) {
+		if ((Boolean) source) {
+			return truePattern;
+		}
+		return falsePattern;
 	}
 
 }

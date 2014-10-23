@@ -1,17 +1,12 @@
 package com.tibco.as.convert.converters;
 
-import com.tibco.as.convert.Field;
-import com.tibco.as.convert.format.FloatFormat;
+import com.tibco.as.convert.IConverter;
 
-public class StringToFloat extends AbstractNumberParser {
-
-	public StringToFloat(Field field) {
-		super(field.getDecimalFormat(), new FloatFormat());
-	}
+public class StringToFloat implements IConverter {
 
 	@Override
-	protected Float convert(Number number) {
-		return number.floatValue();
+	public Float convert(Object source) {
+		return Float.valueOf((String) source);
 	}
 
 }

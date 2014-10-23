@@ -1,17 +1,12 @@
 package com.tibco.as.convert.converters;
 
-import com.tibco.as.convert.Field;
-import com.tibco.as.convert.format.ShortFormat;
+import com.tibco.as.convert.IConverter;
 
-public class StringToShort extends AbstractNumberParser {
-
-	public StringToShort(Field field) {
-		super(field.getIntegerFormat(), new ShortFormat());
-	}
+public class StringToShort implements IConverter {
 
 	@Override
-	protected Short convert(Number source) {
-		return source.shortValue();
+	public Short convert(Object source) {
+		return Short.valueOf((String) source);
 	}
 
 }

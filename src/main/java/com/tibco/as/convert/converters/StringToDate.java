@@ -1,19 +1,20 @@
 package com.tibco.as.convert.converters;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 
-import com.tibco.as.convert.ConvertException;
+public class StringToDate extends AbstractStringParser {
 
-public class StringToDate extends AbstractParser {
+	private DateFormat format;
 
 	public StringToDate(DateFormat format) {
-		super(format);
+		this.format = format;
 	}
 
 	@Override
-	protected Date parse(String string) throws ConvertException {
-		return (Date) parseObject(string);
+	protected Date parse(String string) throws ParseException {
+		return format.parse(string);
 	}
 
 }
