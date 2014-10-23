@@ -13,7 +13,7 @@ public class Field {
 	private Boolean fieldEncrypted;
 	private FieldType fieldType;
 	private Class<?> javaType;
-	private ConversionConfig conversion = new ConversionConfig();
+	private Settings conversion = new Settings();
 
 	public Class<?> getJavaType() {
 		return javaType;
@@ -55,7 +55,7 @@ public class Field {
 		this.fieldName = fieldName;
 	}
 
-	public ConversionConfig getConversion() {
+	public Settings getConversion() {
 		return conversion;
 	}
 

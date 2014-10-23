@@ -36,7 +36,7 @@ public class TestStringArrays {
 	}
 
 	private Collection<Field> getFields() {
-		ConversionConfig defaults = new ConversionConfig();
+		Settings defaults = new Settings();
 		defaults.setNumberPattern("#,###");
 		Field field1 = new Field();
 		field1.setFieldName("field1");

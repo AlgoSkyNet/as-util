@@ -90,6 +90,6 @@ public class TestTypeConverters {
 
 	private IConverter getConverter(Class<?> from, Class<?> to)
 			throws UnsupportedConversionException {
-		return factory.getConverter(new ConversionConfig(), from, to);
+		return factory.getConverter(new Settings(), from, to);
 	}
 }

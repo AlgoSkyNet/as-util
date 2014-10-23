@@ -178,7 +178,7 @@ public class ConverterFactory {
 		return getConverter(field.getConversion(), from, to);
 	}
 
-	public IConverter getConverter(ConversionConfig conversion, Class<?> from,
+	public IConverter getConverter(Settings conversion, Class<?> from,
 			Class<?> to) throws UnsupportedConversionException {
 		if (from.isAssignableFrom(to)) {
 			return new Idem();
@@ -337,7 +337,7 @@ public class ConverterFactory {
 		throw new UnsupportedConversionException(from, to);
 	}
 
-	private DateFormat getDateFormat(ConversionConfig conversion) {
+	private DateFormat getDateFormat(Settings conversion) {
 		String pattern = conversion.getDatePattern();
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
 		format.setTimeZone(conversion.getTimeZone());
@@ -349,7 +349,7 @@ public class ConverterFactory {
 		return new ChainedConverter(converter1, converter2);
 	}
 
-	private IConverter getConverter(ConversionConfig conversion, Class<?> from,
+	private IConverter getConverter(Settings conversion, Class<?> from,
 			Class<?> pivot, Class<?> to) throws UnsupportedConversionException {
 		IConverter converter1 = getConverter(conversion, from, pivot);
 		IConverter converter2 = getConverter(conversion, pivot, to);
