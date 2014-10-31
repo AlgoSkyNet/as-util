@@ -14,7 +14,6 @@ public class Settings implements Cloneable {
 	private String datePattern;
 	private String timeZoneID;
 	private String numberPattern;
-	private Settings defaults;
 
 	@Override
 	public Settings clone() {
@@ -34,10 +33,7 @@ public class Settings implements Cloneable {
 
 	public Blob getBlob() {
 		if (blob == null) {
-			if (defaults == null) {
-				return Blob.HEX;
-			}
-			return defaults.getBlob();
+			return Blob.HEX;
 		}
 		return blob;
 	}
@@ -48,10 +44,7 @@ public class Settings implements Cloneable {
 
 	public String getBooleanTruePattern() {
 		if (booleanTruePattern == null) {
-			if (defaults == null) {
-				return DEFAULT_PATTERN_BOOLEAN_TRUE;
-			}
-			return defaults.getBooleanTruePattern();
+			return DEFAULT_PATTERN_BOOLEAN_TRUE;
 		}
 		return booleanTruePattern;
 	}
@@ -62,10 +55,7 @@ public class Settings implements Cloneable {
 
 	public String getBooleanFalsePattern() {
 		if (booleanFalsePattern == null) {
-			if (defaults == null) {
-				return DEFAULT_PATTERN_BOOLEAN_FALSE;
-			}
-			return defaults.getBooleanFalsePattern();
+			return DEFAULT_PATTERN_BOOLEAN_FALSE;
 		}
 		return booleanFalsePattern;
 	}
@@ -75,12 +65,6 @@ public class Settings implements Cloneable {
 	}
 
 	public String getDatePattern() {
-		if (datePattern == null) {
-			if (defaults == null) {
-				return null;
-			}
-			return defaults.getDatePattern();
-		}
 		return datePattern;
 	}
 
@@ -90,10 +74,7 @@ public class Settings implements Cloneable {
 
 	public String getTimeZoneID() {
 		if (timeZoneID == null) {
-			if (defaults == null) {
-				return DEFAULT_TIMEZONE;
-			}
-			return defaults.getTimeZoneID();
+			return DEFAULT_TIMEZONE;
 		}
 		return timeZoneID;
 	}
@@ -103,12 +84,6 @@ public class Settings implements Cloneable {
 	}
 
 	public String getNumberPattern() {
-		if (numberPattern == null) {
-			if (defaults == null) {
-				return null;
-			}
-			return defaults.getNumberPattern();
-		}
 		return numberPattern;
 	}
 
@@ -122,10 +97,6 @@ public class Settings implements Cloneable {
 			return null;
 		}
 		return TimeZone.getTimeZone(timeZoneID);
-	}
-
-	public void setDefaults(Settings defaults) {
-		this.defaults = defaults;
 	}
 
 }

@@ -6,12 +6,11 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.tibco.as.convert.accessors.BlobAccessor;
@@ -20,7 +19,6 @@ import com.tibco.as.convert.accessors.CharacterAccessor;
 import com.tibco.as.convert.accessors.DateTimeAccessor;
 import com.tibco.as.convert.accessors.DoubleAccessor;
 import com.tibco.as.convert.accessors.FloatAccessor;
-import com.tibco.as.convert.accessors.ITupleAccessor;
 import com.tibco.as.convert.accessors.IntegerAccessor;
 import com.tibco.as.convert.accessors.LongAccessor;
 import com.tibco.as.convert.accessors.ShortAccessor;
@@ -97,7 +95,7 @@ import com.tibco.as.space.FieldDef.FieldType;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class ConverterFactory {
 
-	private static Logger logger = LogFactory.getLog(ConverterFactory.class);
+	private Logger log = LogFactory.getLog(ConverterFactory.class);
 	private Map<Class, Map<Class, Class<? extends IConverter>>> converters = new LinkedHashMap<Class, Map<Class, Class<? extends IConverter>>>();
 
 	public ConverterFactory() {
@@ -156,30 +154,27 @@ public class ConverterFactory {
 		}
 		Map<Class, Class<? extends IConverter>> map = converters.get(from);
 		if (map.containsKey(to)) {
-			logger.warning(MessageFormat.format(
-					"Duplicate converters: {0} - {1}", map.get(to).getName(),
-					converter.getName()));
+			log.warning(MessageFormat.format("Duplicate converters: {0} - {1}",
+					map.get(to).getName(), converter.getName()));
 		}
 		map.put(to, converter);
 
 	}
 
-	public IConverter getJavaConverter(Field field)
-			throws UnsupportedConversionException {
-		Class<?> from = field.getJavaType();
-		Class<?> to = getJavaType(field.getFieldType());
-		return getConverter(field.getConversion(), from, to);
+	public IConverter getConverter(Settings settings, Class<?> from,
+			FieldType to) {
+		return getConverter(settings, from, getJavaType(to));
 	}
 
-	public IConverter getFieldConverter(Field field)
-			throws UnsupportedConversionException {
-		Class<?> from = getJavaType(field.getFieldType());
-		Class<?> to = field.getJavaType();
-		return getConverter(field.getConversion(), from, to);
+	public IConverter getConverter(Settings settings, FieldType from,
+			Class<?> to) {
+		return getConverter(settings, getJavaType(from), to);
 	}
 
-	public IConverter getConverter(Settings conversion, Class<?> from,
-			Class<?> to) throws UnsupportedConversionException {
+	public IConverter getConverter(Settings settings, Class<?> from, Class<?> to) {
+		if (settings == null) {
+			settings = new Settings();
+		}
 		if (from.isAssignableFrom(to)) {
 			return new Idem();
 		}
@@ -193,96 +188,110 @@ public class ConverterFactory {
 						return (IConverter) clazz.getConstructors()[0]
 								.newInstance();
 					} catch (Exception e) {
-						throw new UnsupportedConversionException(from, to, e);
+						String msg = MessageFormat.format(
+								"Could not instantiate {0}", clazz);
+						log.log(Level.SEVERE, msg, e);
 					}
 				}
 			}
 		}
 		if (Boolean.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				return new BooleanToString(conversion.getBooleanTruePattern(),
-						conversion.getBooleanFalsePattern());
+				return new BooleanToString(settings.getBooleanTruePattern(),
+						settings.getBooleanFalsePattern());
+			}
+			if (Date.class.isAssignableFrom(to)) {
+				return getConverter(settings, from, Long.class, to);
 			}
 		}
 		if (Date.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				if (conversion.getDatePattern() == null) {
-					return getConverter(conversion, from, Calendar.class, to);
+				if (settings.getDatePattern() == null) {
+					return getConverter(settings, from, Calendar.class, to);
 				}
-				return new DateToString(getDateFormat(conversion));
+				return new DateToString(getDateFormat(settings));
+			}
+			if (byte[].class.isAssignableFrom(to)) {
+				return getConverter(settings, from, Long.class, to);
+			}
+			if (Boolean.class.isAssignableFrom(to)) {
+				return getConverter(settings, from, Long.class, to);
+			}
+			if (Character.class.isAssignableFrom(to)) {
+				return getConverter(settings, from, String.class, to);
 			}
 		}
 		if (Calendar.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				if (conversion.getDatePattern() == null) {
+				if (settings.getDatePattern() == null) {
 					return new ISO8601ToString();
 				}
-				return getConverter(conversion, from, Date.class, to);
+				return getConverter(settings, from, Date.class, to);
 			}
 		}
 		if (String.class.isAssignableFrom(from)) {
 			if (Boolean.class.isAssignableFrom(to)) {
-				return new StringToBoolean(conversion.getBooleanTruePattern());
+				return new StringToBoolean(settings.getBooleanTruePattern());
 			}
 			if (Byte.class.isAssignableFrom(to)) {
-				String pattern = conversion.getNumberPattern();
+				String pattern = settings.getNumberPattern();
 				if (pattern == null) {
 					return new StringToByte();
 				}
 				return getNumberConverter(pattern, new NumberToByte());
 			}
 			if (Double.class.isAssignableFrom(to)) {
-				String pattern = conversion.getNumberPattern();
+				String pattern = settings.getNumberPattern();
 				if (pattern == null) {
 					return new StringToDouble();
 				}
 				return getNumberConverter(pattern, new NumberToDouble());
 			}
 			if (Float.class.isAssignableFrom(to)) {
-				String pattern = conversion.getNumberPattern();
+				String pattern = settings.getNumberPattern();
 				if (pattern == null) {
 					return new StringToFloat();
 				}
 				return getNumberConverter(pattern, new NumberToFloat());
 			}
 			if (Integer.class.isAssignableFrom(to)) {
-				String pattern = conversion.getNumberPattern();
+				String pattern = settings.getNumberPattern();
 				if (pattern == null) {
 					return new StringToInteger();
 				}
 				return getNumberConverter(pattern, new NumberToInteger());
 			}
 			if (Long.class.isAssignableFrom(to)) {
-				String pattern = conversion.getNumberPattern();
+				String pattern = settings.getNumberPattern();
 				if (pattern == null) {
 					return new StringToLong();
 				}
 				return getNumberConverter(pattern, new NumberToLong());
 			}
 			if (Short.class.isAssignableFrom(to)) {
-				String pattern = conversion.getNumberPattern();
+				String pattern = settings.getNumberPattern();
 				if (pattern == null) {
 					return new StringToShort();
 				}
 				return getNumberConverter(pattern, new NumberToShort());
 			}
 			if (Date.class.isAssignableFrom(to)) {
-				if (conversion.getDatePattern() == null) {
-					return getConverter(conversion, from, Calendar.class, to);
+				if (settings.getDatePattern() == null) {
+					return getConverter(settings, from, Calendar.class, to);
 				}
-				return new StringToDate(getDateFormat(conversion));
+				return new StringToDate(getDateFormat(settings));
 			}
 			if (Calendar.class.isAssignableFrom(to)) {
-				if (conversion.getDatePattern() == null) {
+				if (settings.getDatePattern() == null) {
 					return new StringToISO8601();
 				}
-				return getConverter(conversion, from, Date.class, to);
+				return getConverter(settings, from, Date.class, to);
 			}
 			if (DateTime.class.isAssignableFrom(to)) {
-				return getConverter(conversion, from, Calendar.class, to);
+				return getConverter(settings, from, Calendar.class, to);
 			}
 			if (byte[].class.isAssignableFrom(to)) {
-				switch (conversion.getBlob()) {
+				switch (settings.getBlob()) {
 				case BASE64:
 					return new Base64ToBytes();
 				default:
@@ -292,32 +301,32 @@ public class ConverterFactory {
 		}
 		if (DateTime.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				return getConverter(conversion, from, Calendar.class, to);
+				return getConverter(settings, from, Calendar.class, to);
 			}
 			if (Long.class.isAssignableFrom(to)) {
-				return getConverter(conversion, from, Date.class, to);
+				return getConverter(settings, from, Date.class, to);
 			}
 			if (Number.class.isAssignableFrom(to)) {
-				return getConverter(conversion, from, Long.class, to);
+				return getConverter(settings, from, Long.class, to);
 			}
 		}
 		if (Long.class.isAssignableFrom(from)) {
 			if (DateTime.class.isAssignableFrom(to)) {
-				return getConverter(conversion, from, Date.class, to);
+				return getConverter(settings, from, Date.class, to);
 			}
 		}
 		if (Number.class.isAssignableFrom(from)) {
 			if (DateTime.class.isAssignableFrom(to)) {
-				return getConverter(conversion, from, Long.class, to);
+				return getConverter(settings, from, Long.class, to);
 			}
 			if (BigDecimal.class.isAssignableFrom(to)) {
-				return getConverter(conversion, from, Long.class, to);
+				return getConverter(settings, from, Long.class, to);
 			}
 			if (BigInteger.class.isAssignableFrom(to)) {
-				return getConverter(conversion, from, Long.class, to);
+				return getConverter(settings, from, Long.class, to);
 			}
 			if (String.class.isAssignableFrom(to)) {
-				String pattern = conversion.getNumberPattern();
+				String pattern = settings.getNumberPattern();
 				if (pattern == null) {
 					return new NumberToString();
 				}
@@ -326,21 +335,29 @@ public class ConverterFactory {
 		}
 		if (byte[].class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				switch (conversion.getBlob()) {
+				switch (settings.getBlob()) {
 				case BASE64:
 					return new BytesToBase64();
 				default:
 					return new BytesToHex();
 				}
 			}
+			if (Date.class.isAssignableFrom(to)) {
+				return getConverter(settings, from, Long.class, to);
+			}
 		}
-		throw new UnsupportedConversionException(from, to);
+		if (Character.class.isAssignableFrom(from)) {
+			if (Date.class.isAssignableFrom(to)) {
+				return getConverter(settings, from, String.class, to);
+			}
+		}
+		return null;
 	}
 
-	private DateFormat getDateFormat(Settings conversion) {
-		String pattern = conversion.getDatePattern();
+	private DateFormat getDateFormat(Settings settings) {
+		String pattern = settings.getDatePattern();
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
-		format.setTimeZone(conversion.getTimeZone());
+		format.setTimeZone(settings.getTimeZone());
 		return format;
 	}
 
@@ -349,14 +366,14 @@ public class ConverterFactory {
 		return new ChainedConverter(converter1, converter2);
 	}
 
-	private IConverter getConverter(Settings conversion, Class<?> from,
-			Class<?> pivot, Class<?> to) throws UnsupportedConversionException {
-		IConverter converter1 = getConverter(conversion, from, pivot);
-		IConverter converter2 = getConverter(conversion, pivot, to);
+	private IConverter getConverter(Settings settings, Class<?> from,
+			Class<?> pivot, Class<?> to) {
+		IConverter converter1 = getConverter(settings, from, pivot);
+		IConverter converter2 = getConverter(settings, pivot, to);
 		return new ChainedConverter(converter1, converter2);
 	}
 
-	private Class<?> getJavaType(FieldType fieldType) {
+	public Class<?> getJavaType(FieldType fieldType) {
 		if (fieldType == null) {
 			return String.class;
 		}
@@ -390,71 +407,31 @@ public class ConverterFactory {
 				&& candidateTo.isAssignableFrom(to);
 	}
 
-	public IConverter getJavaConverter(Collection<Field> fields)
-			throws UnsupportedConversionException {
-		Collection<ITupleAccessor> accessors = getAccessors(fields);
-		Collection<IConverter> converters = getJavaConverters(fields);
-		return new ArrayConverter(accessors, converters);
-	}
-
-	private Collection<IConverter> getJavaConverters(Collection<Field> fields)
-			throws UnsupportedConversionException {
-		Collection<IConverter> converters = new ArrayList<IConverter>();
-		for (Field field : fields) {
-			converters.add(getJavaConverter(field));
-		}
-		return converters;
-	}
-
-	public IConverter getTupleConverter(Collection<Field> fields,
-			Class<?> componentType) throws UnsupportedConversionException {
-		Collection<ITupleAccessor> accessors = getAccessors(fields);
-		Collection<IConverter> converters = getFieldConverters(fields);
-		return new TupleConverter(accessors, converters, componentType);
-	}
-
-	private Collection<IConverter> getFieldConverters(Collection<Field> fields)
-			throws UnsupportedConversionException {
-		Collection<IConverter> converters = new ArrayList<IConverter>();
-		for (Field field : fields) {
-			converters.add(getFieldConverter(field));
-		}
-		return converters;
-	}
-
-	private ITupleAccessor getAccessor(Field field) {
-		if (field.getFieldType() == null) {
+	public IAccessor getAccessor(String fieldName, FieldType fieldType) {
+		if (fieldType == null) {
 			return null;
 		}
-		switch (field.getFieldType()) {
+		switch (fieldType) {
 		case BLOB:
-			return new BlobAccessor(field.getFieldName());
+			return new BlobAccessor(fieldName);
 		case BOOLEAN:
-			return new BooleanAccessor(field.getFieldName());
+			return new BooleanAccessor(fieldName);
 		case CHAR:
-			return new CharacterAccessor(field.getFieldName());
+			return new CharacterAccessor(fieldName);
 		case DATETIME:
-			return new DateTimeAccessor(field.getFieldName());
+			return new DateTimeAccessor(fieldName);
 		case DOUBLE:
-			return new DoubleAccessor(field.getFieldName());
+			return new DoubleAccessor(fieldName);
 		case FLOAT:
-			return new FloatAccessor(field.getFieldName());
+			return new FloatAccessor(fieldName);
 		case INTEGER:
-			return new IntegerAccessor(field.getFieldName());
+			return new IntegerAccessor(fieldName);
 		case LONG:
-			return new LongAccessor(field.getFieldName());
+			return new LongAccessor(fieldName);
 		case SHORT:
-			return new ShortAccessor(field.getFieldName());
+			return new ShortAccessor(fieldName);
 		default:
-			return new StringAccessor(field.getFieldName());
+			return new StringAccessor(fieldName);
 		}
-	}
-
-	private Collection<ITupleAccessor> getAccessors(Collection<Field> fields) {
-		Collection<ITupleAccessor> accessors = new ArrayList<ITupleAccessor>();
-		for (Field field : fields) {
-			accessors.add(getAccessor(field));
-		}
-		return accessors;
 	}
 }

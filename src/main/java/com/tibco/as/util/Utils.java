@@ -140,31 +140,6 @@ public class Utils {
 		return metaspace.getSpace(spaceName, distributionRole);
 	}
 
-	public static final char EXTENSION_SEPARATOR = '.';
-
-	public static String getExtension(String filename) {
-		int extensionPos = getExtensionPosition(filename);
-		if (extensionPos == -1 || extensionPos == filename.length() - 1) {
-			return "";
-		}
-		return filename.substring(extensionPos + 1);
-	}
-
-	private static int getExtensionPosition(String filename) {
-		if (filename == null) {
-			return -1;
-		}
-		return filename.lastIndexOf(EXTENSION_SEPARATOR);
-	}
-
-	public static String getBaseName(String filename) {
-		int position = getExtensionPosition(filename);
-		if (position == -1) {
-			return filename;
-		}
-		return filename.substring(0, position);
-	}
-
 	public static void copy(InputStream inp, OutputStream out)
 			throws IOException {
 		byte[] buff = new byte[4096];

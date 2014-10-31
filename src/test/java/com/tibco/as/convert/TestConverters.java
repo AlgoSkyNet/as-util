@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.tibco.as.space.DateTime;
 import com.tibco.as.space.FieldDef.FieldType;
 
-public class TestTypeConverters {
+public class TestConverters {
 
 	private ConverterFactory factory = new ConverterFactory();
 
@@ -78,18 +78,47 @@ public class TestTypeConverters {
 		Calendar calendar = DatatypeConverter.parseDateTime(dateString);
 		// calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 		DateTime dateTime = DateTime.create(calendar);
-		Field field = new Field();
-		field.setFieldName("field1");
-		field.setFieldType(FieldType.DATETIME);
-		field.setJavaType(String.class);
-		IConverter converter = factory.getFieldConverter(field);
-		Assert.assertEquals(calendar.getTimeInMillis(), DatatypeConverter
-				.parseDateTime((String) converter.convert(dateTime))
-				.getTimeInMillis());
+		Assert.assertEquals(
+				calendar.getTimeInMillis(),
+				DatatypeConverter.parseDateTime(
+						(String) getConverter(FieldType.DATETIME, String.class)
+								.convert(dateTime)).getTimeInMillis());
 	}
 
-	private IConverter getConverter(Class<?> from, Class<?> to)
-			throws UnsupportedConversionException {
+	private IConverter getConverter(FieldType fieldType, Class<?> javaType) {
+		return factory.getConverter(new Settings(), fieldType, javaType);
+	}
+
+	private IConverter getConverter(Class<?> from, Class<?> to) {
 		return factory.getConverter(new Settings(), from, to);
 	}
+
+	@Test
+	public void testToString() throws Exception {
+		Settings defaults = new Settings();
+		defaults.setNumberPattern("#,###");
+		Settings settings = new Settings();
+		settings.setNumberPattern("'P'#,###");
+		String string1 = "P1,000";
+		Integer int1 = 1000;
+		Assert.assertEquals(
+				string1,
+				(String) factory.getConverter(settings, Integer.class,
+						String.class).convert(int1));
+		Assert.assertEquals(
+				int1,
+				(Integer) factory.getConverter(settings, String.class,
+						Integer.class).convert(string1));
+		String string2 = "2,000";
+		Integer int2 = 2000;
+		Assert.assertEquals(
+				string2,
+				(String) factory.getConverter(defaults, Integer.class,
+						String.class).convert(int2));
+		Assert.assertEquals(
+				int2,
+				(Integer) factory.getConverter(defaults, String.class,
+						Integer.class).convert(string2));
+	}
+
 }

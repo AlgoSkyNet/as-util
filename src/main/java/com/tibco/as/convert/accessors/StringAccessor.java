@@ -1,8 +1,9 @@
 package com.tibco.as.convert.accessors;
 
+import com.tibco.as.convert.IAccessor;
 import com.tibco.as.space.Tuple;
 
-public class StringAccessor implements ITupleAccessor {
+public class StringAccessor implements IAccessor {
 
 	private String fieldName;
 
@@ -11,13 +12,13 @@ public class StringAccessor implements ITupleAccessor {
 	}
 
 	@Override
-	public Object get(Tuple tuple) {
-		return tuple.getString(fieldName);
+	public Object get(Object tuple) {
+		return ((Tuple) tuple).getString(fieldName);
 	}
 
 	@Override
-	public Object set(Tuple tuple, Object value) {
-		return tuple.putString(fieldName, (String) value);
+	public Object set(Object tuple, Object value) {
+		return ((Tuple) tuple).putString(fieldName, (String) value);
 	}
 
 }

@@ -1,8 +1,9 @@
 package com.tibco.as.convert.accessors;
 
+import com.tibco.as.convert.IAccessor;
 import com.tibco.as.space.Tuple;
 
-public class FloatAccessor implements ITupleAccessor {
+public class FloatAccessor implements IAccessor {
 
 	private String fieldName;
 
@@ -11,13 +12,13 @@ public class FloatAccessor implements ITupleAccessor {
 	}
 
 	@Override
-	public Object get(Tuple tuple) {
-		return tuple.getFloat(fieldName);
+	public Object get(Object tuple) {
+		return ((Tuple) tuple).getFloat(fieldName);
 	}
 
 	@Override
-	public Object set(Tuple tuple, Object value) {
-		return tuple.putFloat(fieldName, (Float) value);
+	public Object set(Object tuple, Object value) {
+		return ((Tuple) tuple).putFloat(fieldName, (Float) value);
 	}
 
 }

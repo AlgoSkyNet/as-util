@@ -1,8 +1,9 @@
 package com.tibco.as.convert.accessors;
 
+import com.tibco.as.convert.IAccessor;
 import com.tibco.as.space.Tuple;
 
-public class BooleanAccessor implements ITupleAccessor {
+public class BooleanAccessor implements IAccessor {
 
 	private String fieldName;
 
@@ -11,13 +12,13 @@ public class BooleanAccessor implements ITupleAccessor {
 	}
 
 	@Override
-	public Object get(Tuple tuple) {
-		return tuple.getBoolean(fieldName);
+	public Object get(Object tuple) {
+		return ((Tuple) tuple).getBoolean(fieldName);
 	}
 
 	@Override
-	public Object set(Tuple tuple, Object value) {
-		return tuple.putBoolean(fieldName, (Boolean) value);
+	public Object set(Object tuple, Object value) {
+		return ((Tuple) tuple).putBoolean(fieldName, (Boolean) value);
 	}
 
 }

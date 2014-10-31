@@ -6,9 +6,9 @@ package com.tibco.as.convert;
  * 
  * @author Julien Ruaux
  */
-public interface IAccessor<T> {
+public interface IAccessor {
 
-	public Object get(T object);
+	public Object get(Object object);
 
-	public Object set(T object, Object value);
+	public Object set(Object object, Object value);
 }
