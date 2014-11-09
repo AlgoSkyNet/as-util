@@ -2,7 +2,7 @@ package com.tibco.as.convert;
 
 import java.util.TimeZone;
 
-public class Settings implements Cloneable {
+public class Settings {
 
 	private final static String DEFAULT_PATTERN_BOOLEAN_TRUE = "true";
 	private final static String DEFAULT_PATTERN_BOOLEAN_FALSE = "false";
@@ -14,13 +14,6 @@ public class Settings implements Cloneable {
 	private String datePattern;
 	private String timeZoneID;
 	private String numberPattern;
-
-	@Override
-	public Settings clone() {
-		Settings clone = new Settings();
-		copyTo(clone);
-		return clone;
-	}
 
 	public void copyTo(Settings target) {
 		target.blob = blob;

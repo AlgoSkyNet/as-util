@@ -434,4 +434,41 @@ public class ConverterFactory {
 			return new StringAccessor(fieldName);
 		}
 	}
+
+	public FieldType getFieldType(Class<?> javaType) {
+		if (byte[].class.isAssignableFrom(javaType)) {
+			return FieldType.BLOB;
+		}
+		if (Boolean.class.isAssignableFrom(javaType)) {
+			return FieldType.BOOLEAN;
+		}
+		if (Character.class.isAssignableFrom(javaType)) {
+			return FieldType.CHAR;
+		}
+		if (DateTime.class.isAssignableFrom(javaType)) {
+			return FieldType.DATETIME;
+		}
+		if (Calendar.class.isAssignableFrom(javaType)) {
+			return FieldType.DATETIME;
+		}
+		if (Date.class.isAssignableFrom(javaType)) {
+			return FieldType.DATETIME;
+		}
+		if (Double.class.isAssignableFrom(javaType)) {
+			return FieldType.DOUBLE;
+		}
+		if (Float.class.isAssignableFrom(javaType)) {
+			return FieldType.FLOAT;
+		}
+		if (Integer.class.isAssignableFrom(javaType)) {
+			return FieldType.INTEGER;
+		}
+		if (Long.class.isAssignableFrom(javaType)) {
+			return FieldType.LONG;
+		}
+		if (Short.class.isAssignableFrom(javaType)) {
+			return FieldType.SHORT;
+		}
+		return FieldType.STRING;
+	}
 }
