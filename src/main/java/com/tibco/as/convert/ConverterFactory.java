@@ -435,7 +435,7 @@ public class ConverterFactory {
 		}
 	}
 
-	public FieldType getFieldType(Class<?> javaType) {
+	public static FieldType getFieldType(Class<?> javaType) {
 		if (byte[].class.isAssignableFrom(javaType)) {
 			return FieldType.BLOB;
 		}
