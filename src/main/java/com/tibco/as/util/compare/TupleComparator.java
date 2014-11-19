@@ -32,6 +32,9 @@ public class TupleComparator implements Comparator<Tuple> {
 	}
 
 	private static ITupleComparator getComparator(FieldDef fieldDef) {
+		if (fieldDef == null) {
+			return null;
+		}
 		String fieldName = fieldDef.getName();
 		switch (fieldDef.getType()) {
 		case BLOB:
