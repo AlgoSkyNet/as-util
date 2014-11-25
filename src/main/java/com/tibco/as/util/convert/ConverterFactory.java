@@ -56,6 +56,7 @@ import com.tibco.as.util.convert.impl.DateToLong;
 import com.tibco.as.util.convert.impl.DateToString;
 import com.tibco.as.util.convert.impl.DoubleToBigDecimal;
 import com.tibco.as.util.convert.impl.DoubleToBytes;
+import com.tibco.as.util.convert.impl.DynamicConverter;
 import com.tibco.as.util.convert.impl.FloatToBytes;
 import com.tibco.as.util.convert.impl.HexToBytes;
 import com.tibco.as.util.convert.impl.ISO8601ToString;
@@ -174,9 +175,6 @@ public class ConverterFactory {
 	public IConverter getConverter(Settings settings, Class<?> from, Class<?> to) {
 		if (settings == null) {
 			settings = new Settings();
-		}
-		if (from.isAssignableFrom(to)) {
-			return new Idem();
 		}
 		for (Class fromCandidate : converters.keySet()) {
 			Map<Class, Class<? extends IConverter>> candidates = converters
@@ -350,6 +348,15 @@ public class ConverterFactory {
 			if (Date.class.isAssignableFrom(to)) {
 				return getConverter(settings, from, String.class, to);
 			}
+		}
+		if (Object.class.equals(from)) {
+			return new DynamicConverter(settings, to);
+		}
+		if (Object.class.equals(to)) {
+			return new Idem();
+		}
+		if (from.isAssignableFrom(to)) {
+			return new Idem();
 		}
 		return null;
 	}
