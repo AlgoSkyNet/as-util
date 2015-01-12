@@ -18,6 +18,9 @@ public class CharacterAccessor implements IAccessor {
 
 	@Override
 	public Object set(Object tuple, Object value) {
+		if (value == null) {
+			return null;
+		}
 		return ((Tuple) tuple).putChar(fieldName, (Character) value);
 	}
 

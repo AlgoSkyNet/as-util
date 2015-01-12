@@ -1,15 +1,15 @@
 package com.tibco.as.util.convert.impl;
 
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import com.tibco.as.util.convert.IConverter;
 
 public class NumberFormatter implements IConverter {
 
-	private DecimalFormat format;
+	private NumberFormat format;
 
-	public NumberFormatter(String pattern) {
-		this.format = new DecimalFormat(pattern);
+	public NumberFormatter(NumberFormat format) {
+		this.format = format;
 	}
 
 	@Override

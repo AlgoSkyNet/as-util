@@ -58,13 +58,16 @@ public class LogFactory {
 	public static Logger getRootLogger(LogLevel level) {
 		System.setProperty("java.util.logging.SimpleFormatter.format",
 				"[%1$tFT%1$tT.%1$tL][%4$s] %5$s %6$s%n");
-		// Get the root logger
-		Logger rootLogger = Logger.getLogger("");
+		Logger rootLogger = getRootLogger();
 		for (Handler handler : rootLogger.getHandlers()) {
 			handler.setLevel(level.getLevel());
 		}
 		rootLogger.setLevel(level.getLevel());
 		return rootLogger;
+	}
+
+	public static Logger getRootLogger() {
+		return Logger.getLogger("");
 	}
 
 }

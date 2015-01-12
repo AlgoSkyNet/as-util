@@ -15,15 +15,6 @@ public class Settings {
 	private String timeZoneID;
 	private String numberPattern;
 
-	public void copyTo(Settings target) {
-		target.blob = blob;
-		target.booleanTruePattern = booleanTruePattern;
-		target.booleanFalsePattern = booleanFalsePattern;
-		target.datePattern = datePattern;
-		target.numberPattern = numberPattern;
-		target.timeZoneID = timeZoneID;
-	}
-
 	public Blob getBlob() {
 		if (blob == null) {
 			return Blob.HEX;

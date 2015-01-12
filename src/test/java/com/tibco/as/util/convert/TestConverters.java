@@ -10,13 +10,8 @@ import org.junit.Test;
 
 import com.tibco.as.space.DateTime;
 import com.tibco.as.space.FieldDef.FieldType;
-import com.tibco.as.util.convert.ConverterFactory;
-import com.tibco.as.util.convert.IConverter;
-import com.tibco.as.util.convert.Settings;
 
 public class TestConverters {
-
-	private ConverterFactory factory = new ConverterFactory();
 
 	@Test
 	public void testStringLongTrimConverter() throws Exception {
@@ -89,11 +84,12 @@ public class TestConverters {
 	}
 
 	private IConverter getConverter(FieldType fieldType, Class<?> javaType) {
-		return factory.getConverter(new Settings(), fieldType, javaType);
+		return new ConverterFactory().getConverter(
+				ConverterFactory.getJavaType(fieldType), javaType);
 	}
 
 	private IConverter getConverter(Class<?> from, Class<?> to) {
-		return factory.getConverter(new Settings(), from, to);
+		return new ConverterFactory().getConverter(from, to);
 	}
 
 	@Test
@@ -104,24 +100,23 @@ public class TestConverters {
 		settings.setNumberPattern("'P'#,###");
 		String string1 = "P1,000";
 		Integer int1 = 1000;
-		Assert.assertEquals(
-				string1,
-				(String) factory.getConverter(settings, Integer.class,
-						String.class).convert(int1));
+		ConverterFactory factory = new ConverterFactory();
+		factory.setSettings(settings);
+		Assert.assertEquals(string1,
+				factory.getConverter(Integer.class, String.class).convert(int1));
 		Assert.assertEquals(
 				int1,
-				(Integer) factory.getConverter(settings, String.class,
-						Integer.class).convert(string1));
+				factory.getConverter(String.class, Integer.class).convert(
+						string1));
 		String string2 = "2,000";
 		Integer int2 = 2000;
-		Assert.assertEquals(
-				string2,
-				(String) factory.getConverter(defaults, Integer.class,
-						String.class).convert(int2));
+		factory.setSettings(defaults);
+		Assert.assertEquals(string2,
+				factory.getConverter(Integer.class, String.class).convert(int2));
 		Assert.assertEquals(
 				int2,
-				(Integer) factory.getConverter(defaults, String.class,
-						Integer.class).convert(string2));
+				factory.getConverter(String.class, Integer.class).convert(
+						string2));
 	}
 
 }

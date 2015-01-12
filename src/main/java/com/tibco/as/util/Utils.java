@@ -1,15 +1,10 @@
 package com.tibco.as.util;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Stack;
@@ -57,78 +52,6 @@ public class Utils {
 		return ASCommon.getMetaspace(getMetaspaceName(name));
 	}
 
-	public static Metaspace connect(String metaspaceName, Member member)
-			throws ASException {
-		return Metaspace.connect(metaspaceName, getMemberDef(member));
-	}
-
-	private static MemberDef getMemberDef(Member member) {
-		MemberDef memberDef = MemberDef.create();
-		if (member == null) {
-			return memberDef;
-		}
-		if (member.getClusterSuspendThreshold() != null) {
-			if (Utils.hasMemberDefMethod("setClusterSuspendThreshold")) {
-				memberDef.setClusterSuspendThreshold(member
-						.getClusterSuspendThreshold());
-			}
-		}
-		if (member.getConnectTimeout() != null) {
-			if (Utils.hasMemberDefMethod("setConnectTimeout")) {
-				memberDef.setConnectTimeout(member.getConnectTimeout());
-			}
-		}
-		if (member.getDataStore() != null) {
-			memberDef.setDataStore(member.getDataStore());
-		}
-		if (member.getDiscovery() != null) {
-			memberDef.setDiscovery(member.getDiscovery());
-		}
-		if (member.getIdentityPassword() != null) {
-			if (Utils.hasMemberDefMethod("setIdentityPassword")) {
-				memberDef.setIdentityPassword(member.getIdentityPassword()
-						.toCharArray());
-			}
-		}
-		if (member.getListen() != null) {
-			memberDef.setListen(member.getListen());
-		}
-		if (member.getMemberName() != null) {
-			memberDef.setMemberName(member.getMemberName());
-		}
-		if (member.getMemberTimeout() != null) {
-			if (Utils.hasMemberDefMethod("setMemberTimeout")) {
-				memberDef.setMemberTimeout(member.getMemberTimeout());
-			}
-		}
-		if (member.getRemoteDiscovery() != null) {
-			memberDef.setRemoteDiscovery(member.getRemoteDiscovery());
-		}
-		if (member.getRemoteListen() != null) {
-			memberDef.setRemoteListen(member.getRemoteListen());
-		}
-		if (member.getRxBufferSize() != null) {
-			memberDef.setRxBufferSize(member.getRxBufferSize());
-		}
-		if (member.getSecurityPolicyFile() != null) {
-			if (Utils.hasMemberDefMethod("setSecurityPolicyFile")) {
-				memberDef.setSecurityPolicyFile(member.getSecurityPolicyFile());
-			}
-		}
-		if (member.getSecurityTokenFile() != null) {
-			if (Utils.hasMemberDefMethod("setSecurityTokenFile")) {
-				memberDef.setSecurityTokenFile(member.getSecurityTokenFile());
-			}
-		}
-		if (member.getTransportThreadCount() != null) {
-			memberDef.setTransportThreadCount(member.getTransportThreadCount());
-		}
-		if (member.getWorkerThreadCount() != null) {
-			memberDef.setWorkerThreadCount(member.getWorkerThreadCount());
-		}
-		return memberDef;
-	}
-
 	public static String getSpaceURI(String metaspaceName, String spaceName) {
 		return getMetaspaceName(metaspaceName) + "." + spaceName;
 	}
@@ -146,63 +69,25 @@ public class Utils {
 		return metaspace.getSpace(spaceName, distributionRole);
 	}
 
-	public static File copy(String resource, File dir) throws IOException {
-		return copy(resource, dir, resource);
+	public static Collection<String> getFieldNames(SpaceDef spaceDef,
+			String... fieldNames) {
+		Collection<String> result = new ArrayList<String>();
+		for (FieldDef fieldDef : getFieldDefs(spaceDef, fieldNames)) {
+			result.add(fieldDef.getName());
+		}
+		return result;
 	}
 
-	public static File createTempDirectory() throws IOException {
-		File dir = File.createTempFile(Utils.class.getName(),
-				String.valueOf(System.currentTimeMillis()));
-		if (!dir.delete()) {
-			throw new IOException(MessageFormat.format(
-					"Could not delete temp file: {0}", dir.getAbsolutePath()));
+	private static Collection<FieldDef> getFieldDefs(SpaceDef spaceDef,
+			String... fieldNames) {
+		if (fieldNames.length == 0) {
+			return spaceDef.getFieldDefs();
 		}
-		if (!dir.mkdir()) {
-			throw new IOException(MessageFormat.format(
-					"Could not create temp directory: {0}",
-					dir.getAbsolutePath()));
+		Collection<FieldDef> fieldDefs = new ArrayList<FieldDef>();
+		for (String fieldName : fieldNames) {
+			fieldDefs.add(spaceDef.getFieldDef(fieldName));
 		}
-		return dir;
-	}
-
-	public static File copy(String resource, File dir, String filename)
-			throws IOException {
-		File file = new File(dir, filename);
-		copyToFile(resource, file);
-		return file;
-	}
-
-	public static void copyToFile(String resource, File file)
-			throws IOException {
-		OutputStream out = new FileOutputStream(file);
-		try {
-			InputStream in = ClassLoader.getSystemClassLoader()
-					.getResourceAsStream(resource);
-			if (in == null) {
-				throw new FileNotFoundException(resource);
-			}
-			byte[] buff = new byte[4096];
-			int count;
-			try {
-				while ((count = in.read(buff)) != -1) {
-					if (count > 0) {
-						out.write(buff, 0, count);
-					}
-				}
-			} finally {
-				in.close();
-			}
-		} finally {
-			out.close();
-		}
-	}
-
-	public static Collection<String> getFieldNames(SpaceDef spaceDef) {
-		Collection<String> fieldNames = new ArrayList<String>();
-		for (FieldDef fieldDef : spaceDef.getFieldDefs()) {
-			fieldNames.add(fieldDef.getName());
-		}
-		return fieldNames;
+		return fieldDefs;
 	}
 
 	public static boolean matches(String name, String pattern,
@@ -327,4 +212,15 @@ public class Utils {
 		return out.toString();
 	}
 
+	public static String[] getNonKeyFieldNames(SpaceDef spaceDef,
+			String... fieldNames) {
+		Collection<String> result = new ArrayList<String>();
+		Collection<String> keys = spaceDef.getKeyDef().getFieldNames();
+		for (String fieldName : getFieldNames(spaceDef, fieldNames)) {
+			if (!keys.contains(fieldName)) {
+				result.add(fieldName);
+			}
+		}
+		return result.toArray(new String[result.size()]);
+	}
 }

@@ -71,7 +71,7 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-            <Export-Package>com.tibco.as.convert,com.tibco.as.convert.accessors,com.tibco.as.convert.converters,com.tibco.as.convert.format,com.tibco.as.log,com.tibco.as.util</Export-Package>
+            <Export-Package>com.tibco.as.util,com.tibco.as.util.accessors,com.tibco.as.util.compare,com.tibco.as.util.convert,com.tibco.as.util.file,com.tibco.as.util.log</Export-Package>
           </instructions>
         </configuration>
       </plugin>

@@ -18,6 +18,9 @@ public class IntegerAccessor implements IAccessor {
 
 	@Override
 	public Object set(Object tuple, Object value) {
+		if (value == null) {
+			return null;
+		}
 		return ((Tuple) tuple).putInt(fieldName, (Integer) value);
 	}
 
