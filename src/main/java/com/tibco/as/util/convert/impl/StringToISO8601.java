@@ -4,13 +4,11 @@ import java.util.Calendar;
 
 import javax.xml.bind.DatatypeConverter;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class StringToISO8601 implements IConverter {
+public class StringToISO8601 extends AbstractConverter<String, Calendar> {
 
 	@Override
-	public Calendar convert(Object source) {
-		return DatatypeConverter.parseDateTime((String) source);
+	protected Calendar doConvert(String source) {
+		return DatatypeConverter.parseDateTime(source);
 	}
 
 }

@@ -1,18 +1,17 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public abstract class AbstractStringParser implements IConverter {
+public abstract class AbstractStringParser<T> extends
+		AbstractConverter<String, T> {
 
 	@Override
-	public Object convert(Object object) throws Exception {
-		String string = (String) object;
-		if (string.isEmpty()) {
+	protected T doConvert(String source) {
+		if (source.isEmpty()) {
 			return null;
 		}
-		return parse(string);
+		return parse(source);
+
 	}
 
-	protected abstract Object parse(String string) throws Exception;
+	protected abstract T parse(String string);
 
 }

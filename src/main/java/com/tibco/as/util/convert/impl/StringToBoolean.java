@@ -1,8 +1,6 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class StringToBoolean implements IConverter {
+public class StringToBoolean extends AbstractConverter<String, Boolean> {
 
 	private String truePattern;
 
@@ -10,9 +8,8 @@ public class StringToBoolean implements IConverter {
 		this.truePattern = truePattern;
 	}
 
-	@Override
-	public Boolean convert(Object source) {
-		return truePattern.equalsIgnoreCase((String) source);
+	protected Boolean doConvert(String source) {
+		return truePattern.equalsIgnoreCase(source);
 	}
 
 }

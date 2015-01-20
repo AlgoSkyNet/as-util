@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class StringToByte implements IConverter {
+public class StringToByte extends AbstractConverter<String, Byte> {
 
 	@Override
-	public Byte convert(Object source) {
-		return Byte.valueOf((String) source);
+	protected Byte doConvert(String source) {
+		return Byte.valueOf(source);
 	}
 
 }

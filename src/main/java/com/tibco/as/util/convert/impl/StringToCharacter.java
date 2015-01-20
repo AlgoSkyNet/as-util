@@ -1,6 +1,6 @@
 package com.tibco.as.util.convert.impl;
 
-public class StringToCharacter extends AbstractStringParser {
+public class StringToCharacter extends AbstractStringParser<Character> {
 
 	@Override
 	protected Character parse(String value) {

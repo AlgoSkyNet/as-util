@@ -2,13 +2,11 @@ package com.tibco.as.util.convert.impl;
 
 import javax.xml.bind.DatatypeConverter;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class BytesToHex implements IConverter {
+public class BytesToHex extends AbstractConverter<byte[], String> {
 
 	@Override
-	public String convert(Object source) {
-		return DatatypeConverter.printHexBinary((byte[]) source);
+	protected String doConvert(byte[] source) {
+		return DatatypeConverter.printHexBinary(source);
 	}
 
 }

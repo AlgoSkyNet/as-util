@@ -3,12 +3,11 @@ package com.tibco.as.util.convert.impl;
 import java.sql.Time;
 
 import com.tibco.as.space.DateTime;
-import com.tibco.as.util.convert.IConverter;
 
-public class DateTimeToSQLTime implements IConverter {
+public class DateTimeToSQLTime extends AbstractConverter<DateTime, Time> {
 
 	@Override
-	public Time convert(Object value) {
-		return new Time(((DateTime) value).getTimeInMillis());
+	protected Time doConvert(DateTime source) {
+		return new Time(source.getTimeInMillis());
 	}
 }

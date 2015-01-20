@@ -1,8 +1,6 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class BooleanToString implements IConverter {
+public class BooleanToString extends AbstractConverter<Boolean, String> {
 
 	private String truePattern;
 	private String falsePattern;
@@ -13,11 +11,8 @@ public class BooleanToString implements IConverter {
 	}
 
 	@Override
-	public String convert(Object source) {
-		if ((Boolean) source) {
-			return truePattern;
-		}
-		return falsePattern;
+	protected String doConvert(Boolean source) {
+		return source ? truePattern : falsePattern;
 	}
 
 }

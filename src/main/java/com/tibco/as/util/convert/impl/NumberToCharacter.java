@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class NumberToCharacter implements IConverter {
+public class NumberToCharacter extends AbstractConverter<Number, Character> {
 
 	@Override
-	public Character convert(Object value) {
-		return (char) ((Number) value).shortValue();
+	protected Character doConvert(Number source) {
+		return (char) source.shortValue();
 	}
 
 }

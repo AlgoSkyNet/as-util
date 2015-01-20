@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class NumberToByte implements IConverter {
+public class NumberToByte extends AbstractConverter<Number, Byte> {
 
 	@Override
-	public Byte convert(Object value) {
-		return ((Number) value).byteValue();
+	protected Byte doConvert(Number source) {
+		return source.byteValue();
 	}
 
 }

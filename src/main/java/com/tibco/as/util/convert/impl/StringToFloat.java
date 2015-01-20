@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class StringToFloat implements IConverter {
+public class StringToFloat extends AbstractConverter<String, Float> {
 
 	@Override
-	public Float convert(Object source) {
-		return Float.valueOf((String) source);
+	protected Float doConvert(String source) {
+		return Float.valueOf(source);
 	}
 
 }

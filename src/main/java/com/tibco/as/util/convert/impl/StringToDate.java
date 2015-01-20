@@ -3,9 +3,14 @@ package com.tibco.as.util.convert.impl;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class StringToDate extends AbstractStringParser {
+import com.tibco.as.util.log.LogFactory;
 
+public class StringToDate extends AbstractStringParser<Date> {
+
+	private Logger log = LogFactory.getLog(StringToDate.class);
 	private DateFormat format;
 
 	public StringToDate(DateFormat format) {
@@ -13,8 +18,13 @@ public class StringToDate extends AbstractStringParser {
 	}
 
 	@Override
-	protected Date parse(String string) throws ParseException {
-		return format.parse(string);
+	protected Date parse(String string) {
+		try {
+			return format.parse(string);
+		} catch (ParseException e) {
+			log.log(Level.SEVERE, "Could not parse date", e);
+			return null;
+		}
 	}
 
 }

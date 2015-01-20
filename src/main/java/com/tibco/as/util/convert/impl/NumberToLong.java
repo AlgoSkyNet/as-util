@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class NumberToLong implements IConverter {
+public class NumberToLong extends AbstractConverter<Number, Long> {
 
 	@Override
-	public Long convert(Object value) {
-		return ((Number) value).longValue();
+	protected Long doConvert(Number source) {
+		return source.longValue();
 	}
 
 }

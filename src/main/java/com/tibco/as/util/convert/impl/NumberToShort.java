@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class NumberToShort implements IConverter {
+public class NumberToShort extends AbstractConverter<Number, Short> {
 
 	@Override
-	public Short convert(Object value) {
-		return ((Number) value).shortValue();
+	protected Short doConvert(Number source) {
+		return source.shortValue();
 	}
 
 }

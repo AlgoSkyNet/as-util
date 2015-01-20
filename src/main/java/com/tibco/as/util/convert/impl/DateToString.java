@@ -3,9 +3,7 @@ package com.tibco.as.util.convert.impl;
 import java.text.DateFormat;
 import java.util.Date;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class DateToString implements IConverter {
+public class DateToString extends AbstractConverter<Date, String> {
 
 	private DateFormat format;
 
@@ -14,8 +12,8 @@ public class DateToString implements IConverter {
 	}
 
 	@Override
-	public String convert(Object source) {
-		return format.format((Date) source);
+	protected String doConvert(Date source) {
+		return format.format(source);
 	}
 
 }

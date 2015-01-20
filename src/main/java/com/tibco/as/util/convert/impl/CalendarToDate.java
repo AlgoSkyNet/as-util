@@ -3,13 +3,11 @@ package com.tibco.as.util.convert.impl;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class CalendarToDate implements IConverter {
+public class CalendarToDate extends AbstractConverter<Calendar, Date> {
 
 	@Override
-	public Date convert(Object source) {
-		return ((Calendar) source).getTime();
+	protected Date doConvert(Calendar source) {
+		return source.getTime();
 	}
 
 }

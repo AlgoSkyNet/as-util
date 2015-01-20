@@ -2,15 +2,15 @@ package com.tibco.as.util.convert.impl;
 
 import java.nio.ByteBuffer;
 
-public class LongToBytes extends AbstractToBlob {
+public class LongToBytes extends AbstractToBlob<Long> {
 
 	public LongToBytes() {
 		super(Long.SIZE);
 	}
 
 	@Override
-	protected ByteBuffer put(ByteBuffer buffer, Object value) {
-		return buffer.putLong((Long) value);
+	protected ByteBuffer put(ByteBuffer buffer, Long value) {
+		return buffer.putLong(value);
 	}
 
 }

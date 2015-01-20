@@ -2,9 +2,7 @@ package com.tibco.as.util.convert.impl;
 
 import java.text.NumberFormat;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class NumberFormatter implements IConverter {
+public class NumberFormatter extends AbstractConverter<Number, String> {
 
 	private NumberFormat format;
 
@@ -13,7 +11,7 @@ public class NumberFormatter implements IConverter {
 	}
 
 	@Override
-	public String convert(Object source) {
+	protected String doConvert(Number source) {
 		return format.format(source);
 	}
 

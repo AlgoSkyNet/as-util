@@ -1,11 +1,9 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class CharacterToString implements IConverter {
+public class CharacterToString extends AbstractConverter<Character, String> {
 
 	@Override
-	public String convert(Object value) {
-		return String.valueOf(value);
+	protected String doConvert(Character source) {
+		return String.valueOf(source);
 	}
 }

@@ -14,7 +14,7 @@ public class DynamicConverter implements IConverter {
 	}
 
 	@Override
-	public Object convert(Object source) throws Exception {
+	public Object convert(Object source) {
 		Class<?> from = source.getClass();
 		IConverter converter = factory.getConverter(from, to);
 		if (converter == null) {

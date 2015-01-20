@@ -2,12 +2,10 @@ package com.tibco.as.util.convert.impl;
 
 import javax.xml.bind.DatatypeConverter;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class HexToBytes implements IConverter {
+public class HexToBytes extends AbstractConverter<String, byte[]> {
 
 	@Override
-	public byte[] convert(Object source) {
-		return DatatypeConverter.parseHexBinary((String) source);
+	protected byte[] doConvert(String source) {
+		return DatatypeConverter.parseHexBinary(source);
 	}
 }

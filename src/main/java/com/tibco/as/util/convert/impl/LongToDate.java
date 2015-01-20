@@ -2,12 +2,10 @@ package com.tibco.as.util.convert.impl;
 
 import java.util.Date;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class LongToDate implements IConverter {
+public class LongToDate extends AbstractConverter<Long, Date> {
 
 	@Override
-	public Date convert(Object value) {
-		return new Date((Long) value);
+	protected Date doConvert(Long source) {
+		return new Date(source);
 	}
 }

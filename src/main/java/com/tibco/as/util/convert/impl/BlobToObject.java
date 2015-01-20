@@ -1,17 +1,31 @@
 package com.tibco.as.util.convert.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.tibco.as.util.convert.IConverter;
+import com.tibco.as.util.log.LogFactory;
 
-public class BlobToObject implements IConverter {
+public class BlobToObject extends AbstractConverter<byte[], Object> {
+
+	private Logger log = LogFactory.getLog(BlobToObject.class);
 
 	@Override
-	public Object convert(Object value) throws Exception {
-		ByteArrayInputStream bais = new ByteArrayInputStream((byte[]) value);
-		ObjectInputStream ois = new ObjectInputStream(bais);
-		return ois.readObject();
+	protected Object doConvert(byte[] source) {
+		ByteArrayInputStream bais = new ByteArrayInputStream(source);
+		try {
+			ObjectInputStream ois = new ObjectInputStream(bais);
+			try {
+				return ois.readObject();
+			} catch (ClassNotFoundException e) {
+				log.log(Level.SEVERE, "Could not deserialize object", e);
+			}
+		} catch (IOException e) {
+			log.log(Level.SEVERE, "Could not deserialize object", e);
+		}
+		return null;
 	}
 
 }

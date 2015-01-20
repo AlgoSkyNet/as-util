@@ -3,13 +3,12 @@ package com.tibco.as.util.convert.impl;
 import java.util.Date;
 
 import com.tibco.as.space.DateTime;
-import com.tibco.as.util.convert.IConverter;
 
-public class DateToDateTime implements IConverter {
+public class DateToDateTime extends AbstractConverter<Date, DateTime> {
 
 	@Override
-	public DateTime convert(Object value) {
-		return DateTime.create(((Date) value).getTime());
+	protected DateTime doConvert(Date source) {
+		return DateTime.create(source.getTime());
 	}
 
 }

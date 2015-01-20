@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class NumberToString implements IConverter {
+public class NumberToString extends AbstractConverter<Number, String> {
 
 	@Override
-	public Object convert(Object source) {
-		return ((Number) source).toString();
+	protected String doConvert(Number source) {
+		return source.toString();
 	}
 
 }

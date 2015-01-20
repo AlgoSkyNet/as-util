@@ -436,4 +436,12 @@ public class ConverterFactory {
 		}
 		return FieldType.STRING;
 	}
+
+	public IConverter getConverter(Class<?> from, FieldType to) {
+		return getConverter(from, getJavaType(to));
+	}
+
+	public IConverter getConverter(FieldType from, Class<?> to) {
+		return getConverter(getJavaType(from), to);
+	}
 }

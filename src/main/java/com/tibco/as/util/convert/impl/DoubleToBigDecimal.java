@@ -2,13 +2,11 @@ package com.tibco.as.util.convert.impl;
 
 import java.math.BigDecimal;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class DoubleToBigDecimal implements IConverter {
+public class DoubleToBigDecimal extends AbstractConverter<Double, BigDecimal> {
 
 	@Override
-	public BigDecimal convert(Object value) {
-		return BigDecimal.valueOf((Double) value);
+	protected BigDecimal doConvert(Double source) {
+		return BigDecimal.valueOf(source);
 	}
 
 }

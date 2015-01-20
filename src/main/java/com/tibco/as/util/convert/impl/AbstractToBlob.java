@@ -2,9 +2,7 @@ package com.tibco.as.util.convert.impl;
 
 import java.nio.ByteBuffer;
 
-import com.tibco.as.util.convert.IConverter;
-
-public abstract class AbstractToBlob implements IConverter {
+public abstract class AbstractToBlob<S> extends AbstractConverter<S, byte[]> {
 
 	int capacity;
 
@@ -13,10 +11,10 @@ public abstract class AbstractToBlob implements IConverter {
 	}
 
 	@Override
-	public byte[] convert(Object value) {
-		return put(ByteBuffer.allocate(capacity), value).array();
+	protected byte[] doConvert(S source) {
+		return put(ByteBuffer.allocate(capacity), source).array();
 	}
 
-	protected abstract ByteBuffer put(ByteBuffer buffer, Object value);
+	protected abstract ByteBuffer put(ByteBuffer buffer, S value);
 
 }

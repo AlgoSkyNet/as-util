@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class NumberToBoolean implements IConverter {
+public class NumberToBoolean extends AbstractConverter<Number, Boolean> {
 
 	@Override
-	public Boolean convert(Object value) {
-		return ((Number) value).doubleValue() != 0;
+	protected Boolean doConvert(Number source) {
+		return source.doubleValue() != 0;
 	}
 
 }

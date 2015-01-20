@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class NumberToInteger implements IConverter {
+public class NumberToInteger extends AbstractConverter<Number, Integer> {
 
 	@Override
-	public Integer convert(Object value) {
-		return ((Number) value).intValue();
+	protected Integer doConvert(Number source) {
+		return source.intValue();
 	}
 
 }

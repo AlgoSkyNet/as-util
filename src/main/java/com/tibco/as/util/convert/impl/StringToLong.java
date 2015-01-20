@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class StringToLong implements IConverter {
+public class StringToLong extends AbstractConverter<String, Long> {
 
 	@Override
-	public Long convert(Object source) {
-		return Long.valueOf((String) source);
+	protected Long doConvert(String source) {
+		return Long.valueOf(source);
 	}
 
 }

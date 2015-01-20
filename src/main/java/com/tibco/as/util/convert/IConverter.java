@@ -11,6 +11,6 @@ public interface IConverter {
 	/**
 	 * Converts given object
 	 */
-	Object convert(Object source) throws Exception;
+	Object convert(Object source);
 
 }

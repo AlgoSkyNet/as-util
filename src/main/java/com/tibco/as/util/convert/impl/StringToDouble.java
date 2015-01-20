@@ -1,12 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class StringToDouble implements IConverter {
+public class StringToDouble extends AbstractConverter<String, Double> {
 
 	@Override
-	public Double convert(Object source) {
-		return Double.valueOf((String) source);
+	protected Double doConvert(String source) {
+		return Double.valueOf(source);
 	}
 
 }

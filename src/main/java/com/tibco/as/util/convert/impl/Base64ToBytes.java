@@ -2,13 +2,11 @@ package com.tibco.as.util.convert.impl;
 
 import javax.xml.bind.DatatypeConverter;
 
-import com.tibco.as.util.convert.IConverter;
-
-public class Base64ToBytes implements IConverter {
+public class Base64ToBytes extends AbstractConverter<String, byte[]> {
 
 	@Override
-	public byte[] convert(Object source) {
-		return DatatypeConverter.parseBase64Binary((String) source);
+	protected byte[] doConvert(String source) {
+		return DatatypeConverter.parseBase64Binary(source);
 	}
 
 }
