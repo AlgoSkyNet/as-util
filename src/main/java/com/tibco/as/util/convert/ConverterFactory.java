@@ -89,7 +89,7 @@ public class ConverterFactory {
 
 	private Logger log = LogFactory.getLog(ConverterFactory.class);
 	private Map<Class, Map<Class, Class<? extends IConverter>>> converters = new LinkedHashMap<Class, Map<Class, Class<? extends IConverter>>>();
-	private Settings settings = new Settings();
+	private ConversionConfig config = new ConversionConfig();
 
 	public ConverterFactory() {
 		register(BigInteger.class, byte[].class, BigIntegerToBytes.class);
@@ -139,12 +139,12 @@ public class ConverterFactory {
 		register(URL.class, String.class, URLToString.class);
 	}
 
-	public Settings getSettings() {
-		return settings;
+	public ConversionConfig getConfig() {
+		return config;
 	}
 
-	public void setSettings(Settings settings) {
-		this.settings = settings;
+	public void setConfig(ConversionConfig settings) {
+		this.config = settings;
 	}
 
 	private void register(Class from, Class to,
@@ -182,8 +182,8 @@ public class ConverterFactory {
 		}
 		if (Boolean.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				return new BooleanToString(settings.getBooleanTruePattern(),
-						settings.getBooleanFalsePattern());
+				return new BooleanToString(config.getBooleanTruePattern(),
+						config.getBooleanFalsePattern());
 			}
 			if (Date.class.isAssignableFrom(to)) {
 				return getConverter(from, Long.class, to);
@@ -191,7 +191,7 @@ public class ConverterFactory {
 		}
 		if (Date.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				if (settings.getDatePattern() == null) {
+				if (config.getDatePattern() == null) {
 					return getConverter(from, Calendar.class, to);
 				}
 				return new DateToString(getDateFormat());
@@ -208,7 +208,7 @@ public class ConverterFactory {
 		}
 		if (Calendar.class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				if (settings.getDatePattern() == null) {
+				if (config.getDatePattern() == null) {
 					return new ISO8601ToString();
 				}
 				return getConverter(from, Date.class, to);
@@ -216,58 +216,58 @@ public class ConverterFactory {
 		}
 		if (String.class.isAssignableFrom(from)) {
 			if (Boolean.class.isAssignableFrom(to)) {
-				return new StringToBoolean(settings.getBooleanTruePattern());
+				return new StringToBoolean(config.getBooleanTruePattern());
 			}
 			if (Byte.class.isAssignableFrom(to)) {
-				String pattern = settings.getNumberPattern();
+				String pattern = config.getNumberPattern();
 				if (pattern == null) {
 					return new StringToByte();
 				}
 				return getNumberConverter(pattern, new NumberToByte());
 			}
 			if (Double.class.isAssignableFrom(to)) {
-				String pattern = settings.getNumberPattern();
+				String pattern = config.getNumberPattern();
 				if (pattern == null) {
 					return new StringToDouble();
 				}
 				return getNumberConverter(pattern, new NumberToDouble());
 			}
 			if (Float.class.isAssignableFrom(to)) {
-				String pattern = settings.getNumberPattern();
+				String pattern = config.getNumberPattern();
 				if (pattern == null) {
 					return new StringToFloat();
 				}
 				return getNumberConverter(pattern, new NumberToFloat());
 			}
 			if (Integer.class.isAssignableFrom(to)) {
-				String pattern = settings.getNumberPattern();
+				String pattern = config.getNumberPattern();
 				if (pattern == null) {
 					return new StringToInteger();
 				}
 				return getNumberConverter(pattern, new NumberToInteger());
 			}
 			if (Long.class.isAssignableFrom(to)) {
-				String pattern = settings.getNumberPattern();
+				String pattern = config.getNumberPattern();
 				if (pattern == null) {
 					return new StringToLong();
 				}
 				return getNumberConverter(pattern, new NumberToLong());
 			}
 			if (Short.class.isAssignableFrom(to)) {
-				String pattern = settings.getNumberPattern();
+				String pattern = config.getNumberPattern();
 				if (pattern == null) {
 					return new StringToShort();
 				}
 				return getNumberConverter(pattern, new NumberToShort());
 			}
 			if (Date.class.isAssignableFrom(to)) {
-				if (settings.getDatePattern() == null) {
+				if (config.getDatePattern() == null) {
 					return getConverter(from, Calendar.class, to);
 				}
 				return new StringToDate(getDateFormat());
 			}
 			if (Calendar.class.isAssignableFrom(to)) {
-				if (settings.getDatePattern() == null) {
+				if (config.getDatePattern() == null) {
 					return new StringToISO8601();
 				}
 				return getConverter(from, Date.class, to);
@@ -276,7 +276,7 @@ public class ConverterFactory {
 				return getConverter(from, Calendar.class, to);
 			}
 			if (byte[].class.isAssignableFrom(to)) {
-				switch (settings.getBlob()) {
+				switch (config.getBlob()) {
 				case BASE64:
 					return new Base64ToBytes();
 				default:
@@ -311,7 +311,7 @@ public class ConverterFactory {
 				return getConverter(from, Long.class, to);
 			}
 			if (String.class.isAssignableFrom(to)) {
-				String pattern = settings.getNumberPattern();
+				String pattern = config.getNumberPattern();
 				if (pattern == null) {
 					return new NumberToString();
 				}
@@ -320,7 +320,7 @@ public class ConverterFactory {
 		}
 		if (byte[].class.isAssignableFrom(from)) {
 			if (String.class.isAssignableFrom(to)) {
-				switch (settings.getBlob()) {
+				switch (config.getBlob()) {
 				case BASE64:
 					return new BytesToBase64();
 				default:
@@ -349,9 +349,9 @@ public class ConverterFactory {
 	}
 
 	private DateFormat getDateFormat() {
-		String pattern = settings.getDatePattern();
+		String pattern = config.getDatePattern();
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
-		format.setTimeZone(settings.getTimeZone());
+		format.setTimeZone(config.getTimeZone());
 		return format;
 	}
 

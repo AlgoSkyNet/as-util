@@ -2,7 +2,7 @@ package com.tibco.as.util.convert;
 
 import java.util.TimeZone;
 
-public class Settings {
+public class ConversionConfig {
 
 	private final static String DEFAULT_PATTERN_BOOLEAN_TRUE = "true";
 	private final static String DEFAULT_PATTERN_BOOLEAN_FALSE = "false";

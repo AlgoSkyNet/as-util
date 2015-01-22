@@ -94,14 +94,14 @@ public class TestConverters {
 
 	@Test
 	public void testToString() throws Exception {
-		Settings defaults = new Settings();
+		ConversionConfig defaults = new ConversionConfig();
 		defaults.setNumberPattern("#,###");
-		Settings settings = new Settings();
+		ConversionConfig settings = new ConversionConfig();
 		settings.setNumberPattern("'P'#,###");
 		String string1 = "P1,000";
 		Integer int1 = 1000;
 		ConverterFactory factory = new ConverterFactory();
-		factory.setSettings(settings);
+		factory.setConfig(settings);
 		Assert.assertEquals(string1,
 				factory.getConverter(Integer.class, String.class).convert(int1));
 		Assert.assertEquals(
@@ -110,7 +110,7 @@ public class TestConverters {
 						string1));
 		String string2 = "2,000";
 		Integer int2 = 2000;
-		factory.setSettings(defaults);
+		factory.setConfig(defaults);
 		Assert.assertEquals(string2,
 				factory.getConverter(Integer.class, String.class).convert(int2));
 		Assert.assertEquals(
