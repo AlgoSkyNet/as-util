@@ -1,10 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-public class StringToInteger extends AbstractConverter<String, Integer> {
+public class StringToInteger extends AbstractStringParser<Integer> {
 
 	@Override
-	protected Integer doConvert(String source) {
-		return Integer.valueOf(source);
+	protected Integer parse(String string) {
+		return Integer.valueOf(string);
 	}
 
 }

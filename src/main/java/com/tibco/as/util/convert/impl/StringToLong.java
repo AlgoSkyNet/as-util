@@ -1,10 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-public class StringToLong extends AbstractConverter<String, Long> {
+public class StringToLong extends AbstractStringParser<Long> {
 
 	@Override
-	protected Long doConvert(String source) {
-		return Long.valueOf(source);
+	protected Long parse(String string) {
+		return Long.valueOf(string);
 	}
 
 }

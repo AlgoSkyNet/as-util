@@ -1,10 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-public class StringToShort extends AbstractConverter<String, Short> {
+public class StringToShort extends AbstractStringParser<Short> {
 
 	@Override
-	protected Short doConvert(String source) {
-		return Short.valueOf(source);
+	protected Short parse(String string) {
+		return Short.valueOf(string);
 	}
 
 }

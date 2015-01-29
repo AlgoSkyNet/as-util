@@ -1,6 +1,6 @@
 package com.tibco.as.util.convert.impl;
 
-public class StringToBoolean extends AbstractConverter<String, Boolean> {
+public class StringToBoolean extends AbstractStringParser<Boolean> {
 
 	private String truePattern;
 
@@ -8,8 +8,9 @@ public class StringToBoolean extends AbstractConverter<String, Boolean> {
 		this.truePattern = truePattern;
 	}
 
-	protected Boolean doConvert(String source) {
-		return truePattern.equalsIgnoreCase(source);
+	@Override
+	protected Boolean parse(String string) {
+		return truePattern.equalsIgnoreCase(string);
 	}
 
 }

@@ -1,10 +1,10 @@
 package com.tibco.as.util.convert.impl;
 
-public class StringToDouble extends AbstractConverter<String, Double> {
+public class StringToDouble extends AbstractStringParser<Double> {
 
 	@Override
-	protected Double doConvert(String source) {
-		return Double.valueOf(source);
+	protected Double parse(String string) {
+		return Double.valueOf(string);
 	}
 
 }
